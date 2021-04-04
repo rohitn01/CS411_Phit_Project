@@ -24,10 +24,10 @@ def init_connect_engine():
     return pool
 
 db = init_connect_engine()
-conn = db.connect()
-results = conn.execute("Select GymID, GymName From Gyms")
+#conn = db.connect()
+#results = conn.execute("Select GymID, GymName From Gyms")
 # we do this because results is an object, this is just a quick way to verify the content
-print([x for x in results])
-conn.close()
+#print([x for x in results])
+#conn.close()
 
 from app import routes
