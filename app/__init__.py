@@ -25,7 +25,7 @@ def init_connect_engine():
 
 db = init_connect_engine()
 #conn = db.connect()
-#results = conn.execute("Select GymID, GymName From Gyms")
+#results = conn.execute("Select GymID, GymName, University From Gyms")
 # we do this because results is an object, this is just a quick way to verify the content
 #print([x for x in results])
 #conn.close()

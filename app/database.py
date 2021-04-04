@@ -1,17 +1,18 @@
 from app import db
 
-def fetch_gyms() -> dict:
+def fetch_gyms(gymname: str, university: str) -> dict:
     conn = db.connect()
-    query_results = conn.execute("Select * from Gyms;").fetchall()
+    query = 'SELECT GymName, University, Capacity, Status FROM Gyms WHERE GymName = "{0}" OR University = "{1}" ORDER BY University ASC, GymName ASC;'.format(gymname, university)
+    print(query)
+    query_results = conn.execute(query).fetchall()
     conn.close()
     gyms_list = []
     for result in query_results:
         item = {
-            "GymID": result[0],
-            "GymName": result[1],
-            "University": result[2],
-            "Capacity": result[3],
-            "Status": result[4]
+            "GymName": result[0],
+            "University": result[1],
+            "Capacity": result[2],
+            "Status": result[3]
         }
         gyms_list.append(item)
     return gyms_list

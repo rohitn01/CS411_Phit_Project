@@ -1,0 +1,24 @@
+<center><h1>Gyms</h1>
+<form method = "POST">
+    <input type="text" name="gymname" placeholder="Search by Gym Name..."/>
+    <input type="text" name="university" placeholder="Search by University..."/>
+    <input type="submit"/> 
+</form>
+<table border = '1'>
+    <tr>
+        <td>Gym Name</td>
+        <td>University</td>
+        <td>Capacity</td>
+        <td>Status</td>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{item.GymName}}</td>
+        <td>{{item.University}}</td>
+        <td>{{item.Capacity}}</td>
+        <td>{{item.Status}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</center>

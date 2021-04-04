@@ -1,60 +1,24 @@
 from flask import render_template, request, jsonify, redirect
 from app import app
 from app import database as db_helper
-
-#@app.route('/search', methods=['GET', 'POST'])
-#def search():
-    #if request.method == "POST":
-        #GymUni = request.form['GymUni']
-        # search by GymName or University
-        #cursor.execute("SELECT GymID, GymName, University, Capacity, Status FROM Gyms WHERE GymName LIKE %s OR University LIKE %s", (GymUni, GymUni))
-        #conn.commit()
-        #data = cursor.fetchall()
-        # all in the search box will return all the tuples
-        #if len(data) == 0 and GymUni == 'all': 
-        #    cursor.execute("SELECT GymID, GymName, University, Capacity, Status FROM Gyms")
-        #    conn.commit()
-        #    data = cursor.fetchall()
-        #return render_template('index.html', data=data)
-#    return render_template('index.html')
-
-#@app.route("/delete/<int:gym_id>", methods=['POST'])
-#def delete(gym_id):
-#    try:
-        # db_helper.remove_gym_by_id(gym_id)
- #       result = {'success': True, 'response': 'Removed Gym'}
-#    except:
-#        result = {'success': False, 'response': 'Something went wrong'}
-
-#    return jsonify(result)
-
-@app.route("/edit/<int:gym_id>", methods=['POST'])
-def update(gym_id):
-    data = request.get_json()
-    print(data)
-    try:
-        if "Status" in data:
-            db_helper.update_status_entry(gym_id, data["status"])
-            result = {'success': True, 'response': 'Status Updated'}
-        elif "GymName" in data:
-            db_helper.update_gym_entry(gym_id, data["description"])
-            result = {'success': True, 'response': 'Gym Updated'}
-        else:
-            result = {'success': True, 'response': 'Nothing Updated'}
-    except:
-        result = {'success': False, 'response': 'Something went wrong'}
-
-    return jsonify(result)
-
-#@app.route("/create", methods=['POST'])
-#def create():
-#    data = request.get_json()
-#    # db_helper.insert_new_gym(data['description'])
-#    result = {'success': True, 'response': 'Done'}
-#    return jsonify(result)
+from flask_cors import CORS
+CORS(app)
 
 @app.route("/")
 def homepage():
     """ returns rendered homepage """
-    items = db_helper.fetch_gyms()
-    return render_template("index.html", items=items)
+    
+    return render_template("index.html")
+
+@app.route("/gyms", methods=['GET', 'POST'])
+def gympage():
+    print(request.method)
+    if request.method == 'POST':
+        gymname = request.form.get("gymname")
+        print(gymname)
+        university = request.form.get("university")
+        print(university)
+        items = db_helper.fetch_gyms(gymname, university)
+        print("test")
+        return render_template("gyms.html", items=items)
+    return render_template("gyms.html")
