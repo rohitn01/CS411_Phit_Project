@@ -21,4 +21,7 @@ def gympage():
         items = db_helper.fetch_gyms(gymname, university)
         print("test")
         return render_template("gyms.html", items=items)
+    else:
+        items = db_helper.fetch_gyms("", "")
+        return render_template("gyms.html", items=items)
     return render_template("gyms.html")

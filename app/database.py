@@ -1,8 +1,16 @@
 from app import db
-
+from sqlalchemy.sql import text
 def fetch_gyms(gymname: str, university: str) -> dict:
     conn = db.connect()
-    query = 'SELECT GymName, University, Capacity, Status FROM Gyms WHERE GymName = "{0}" OR University = "{1}" ORDER BY University ASC, GymName ASC;'.format(gymname, university)
+    if len(gymname) > 0 and len(university) > 0:
+        statement = 'SELECT GymName, University, Capacity, Status FROM Gyms WHERE GymName LIKE "%{0}%" OR University LIKE "%{1}%" ORDER BY Status DESC, University ASC, GymName ASC;'.format(gymname, university)
+    elif len(gymname) > 0:
+        statement = 'SELECT GymName, University, Capacity, Status FROM Gyms WHERE GymName LIKE "%{0}%" ORDER BY Status DESC, University ASC, GymName ASC;'.format(gymname)
+    elif len(university) > 0:
+        statement = 'SELECT GymName, University, Capacity, Status FROM Gyms WHERE University LIKE "%{0}%" ORDER BY Status DESC, University ASC, GymName ASC;'.format(university)
+    else:
+        statement = 'SELECT GymName, University, Capacity, Status FROM Gyms ORDER BY Status DESC, University ASC, GymName ASC;'
+    query = text(statement)
     print(query)
     query_results = conn.execute(query).fetchall()
     conn.close()
