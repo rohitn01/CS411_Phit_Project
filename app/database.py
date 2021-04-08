@@ -27,27 +27,28 @@ def fetch_gyms(gymname: str, university: str) -> dict:
 
 def fetch_buddies(username: str) -> dict:
     conn = db.connect()
-    if len(gymname) > 0 and len(university) > 0:
-        statement = ''
+    if len(username) > 0:
+        statement = 'SELECT u.FirstName, u.LastName, u.Email, g.GymName, g.University, r.StartTime, r.EndTime, r.Day, r.Month, r.Year FROM Users AS u NATURAL JOIN Reservations AS r JOIN Gyms AS g USING (GymID), (SELECT * FROM Reservations as cu WHERE cu.Username = "{0}") AS indi WHERE indi.Username != u.Username AND r.StartTime = indi.StartTime AND r.EndTime = indi.EndTime AND r.GymID = indi.GymID AND r.Day = indi.Day AND r.Month = indi.Month AND r.Year = indi.Year ORDER BY r.Year, r.Month, r.Day, u.LastName, u.FirstName;'.format(username)
     query = text(statement)
     print(query)
     query_results = conn.execute(query).fetchall()
     conn.close()
-    gyms_list = []
+    buddy_list = []
     for result in query_results:
         item = {
             "FirstName": result[0],
             "LastName": result[1],
             "Email": result[2],
-            "Username": result[3],
-            "StartTime": result[4],
-            "EndTime": result[5],
-            "Day": result[6],
-            "Month": result[7],
-            "Year": result[8],
+            "GymName": result[3],
+            "University": result[4],
+            "StartTime": result[5],
+            "EndTime": result[6],
+            "Day": result[7],
+            "Month": result[8],
+            "Year": result[9]
         }
-        gyms_list.append(item)
-    return gyms_list
+        buddy_list.append(item)
+    return buddy_list
   
 def update_gym_name(GymID: int, text: str) -> None:
     conn = db.connect()
