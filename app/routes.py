@@ -25,3 +25,13 @@ def gympage():
         items = db_helper.fetch_gyms("", "")
         return render_template("gyms.html", items=items)
     return render_template("gyms.html")
+
+@app.route("/findbuddies", methods=['GET', 'POST'])
+def buddypage():
+    print(request.method)
+    if request.method == 'POST':
+        username = request.form.get("username")
+        items = db_helper.fetch_buddies(username)
+        print("test")
+        return render_template("findbuddies.html", items=items)
+    return render_template("findbuddies.html")

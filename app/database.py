@@ -24,6 +24,30 @@ def fetch_gyms(gymname: str, university: str) -> dict:
         }
         gyms_list.append(item)
     return gyms_list
+
+def fetch_buddies(username: str) -> dict:
+    conn = db.connect()
+    if len(gymname) > 0 and len(university) > 0:
+        statement = ''
+    query = text(statement)
+    print(query)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    gyms_list = []
+    for result in query_results:
+        item = {
+            "FirstName": result[0],
+            "LastName": result[1],
+            "Email": result[2],
+            "Username": result[3],
+            "StartTime": result[4],
+            "EndTime": result[5],
+            "Day": result[6],
+            "Month": result[7],
+            "Year": result[8],
+        }
+        gyms_list.append(item)
+    return gyms_list
   
 def update_gym_name(GymID: int, text: str) -> None:
     conn = db.connect()
