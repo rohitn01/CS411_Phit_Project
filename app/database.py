@@ -6,13 +6,13 @@ from sqlalchemy.sql import text
 def fetch_gyms(gymname: str, university: str) -> dict:
     conn = db.connect()
     if len(gymname) > 0 and len(university) > 0:
-        statement = 'SELECT GymName, University, Capacity, Status FROM Gyms WHERE GymName LIKE "%{0}%" AND University LIKE "%{1}%" ORDER BY Status DESC, University ASC, GymName ASC;'.format(gymname, university)
+        statement = 'SELECT GymID, GymName, University, Capacity, Status FROM Gyms WHERE GymName LIKE "%{0}%" AND University LIKE "%{1}%" ORDER BY Status DESC, University ASC, GymName ASC;'.format(gymname, university)
     elif len(gymname) > 0:
-        statement = 'SELECT GymName, University, Capacity, Status FROM Gyms WHERE GymName LIKE "%{0}%" ORDER BY Status DESC, University ASC, GymName ASC;'.format(gymname)
+        statement = 'SELECT GymID, GymName, University, Capacity, Status FROM Gyms WHERE GymName LIKE "%{0}%" ORDER BY Status DESC, University ASC, GymName ASC;'.format(gymname)
     elif len(university) > 0:
-        statement = 'SELECT GymName, University, Capacity, Status FROM Gyms WHERE University LIKE "%{0}%" ORDER BY Status DESC, University ASC, GymName ASC;'.format(university)
+        statement = 'SELECT GymID, GymName, University, Capacity, Status FROM Gyms WHERE University LIKE "%{0}%" ORDER BY Status DESC, University ASC, GymName ASC;'.format(university)
     else:
-        statement = 'SELECT GymName, University, Capacity, Status FROM Gyms ORDER BY Status DESC, University ASC, GymName ASC;'
+        statement = 'SELECT GymID, GymName, University, Capacity, Status FROM Gyms ORDER BY Status DESC, University ASC, GymName ASC;'
     query = text(statement)
     print(query)
     query_results = conn.execute(query).fetchall()
@@ -20,10 +20,11 @@ def fetch_gyms(gymname: str, university: str) -> dict:
     gyms_list = []
     for result in query_results:
         item = {
-            "GymName": result[0],
-            "University": result[1],
-            "Capacity": result[2],
-            "Status": result[3]
+            "GymID": result[0],
+            "GymName": result[1],
+            "University": result[2],
+            "Capacity": result[3],
+            "Status": result[4]
         }
         gyms_list.append(item)
     return gyms_list
@@ -55,19 +56,24 @@ def fetch_buddies(username: str) -> dict:
   
 def update_gym_name(GymID: int, text: str) -> None:
     conn = db.connect()
-    query = 'Update Gyms set GymName = "{}" where GymID = {};'.format(text, GymID)
+    query = 'Update Gyms set GymName = "{1}" where GymID = {0};'.format(text, GymID)
     conn.execute(query)
     conn.close()
 
 def update_gym_uni(GymID: int, text: str) -> None:
     conn = db.connect()
-    query = 'Update Gyms set University = "{}" where GymID = {};'.format(text, GymID)
+    query = 'Update Gyms set University = "{1}" where GymID = {0};'.format(text, GymID)
+    conn.execute(query)
+    conn.close()
+def update_gym_capacity(GymID: int, text:int) -> None:
+    conn = db.connect()
+    query = 'Update Gyms set Capacity = {1} where GymID = {0};'.format(text, GymID)
     conn.execute(query)
     conn.close()
 
 def update_gym_status(GymID: int, text:str) -> None:
     conn = db.connect()
-    query = 'Update Gyms set Status = "{}" where GymID = {};'.format(text, GymID)
+    query = 'Update Gyms set Status = "{1}" where GymID = {0};'.format(text, GymID)
     conn.execute(query)
     conn.close()
 
