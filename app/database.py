@@ -84,3 +84,95 @@ def remove_gym_by_id(GymID: int) -> None:
     query = 'Delete From Gyms where GymID={};'.format(GymID)
     conn.execute(query)
     conn.close()
+
+
+
+#Physical Data:
+'''
+CREATE TABLE PhysicalData (
+    Username VARCHAR(50), 
+    LastMuscleGroup VARCHAR(50), 
+    Injury VARCHAR(50), 
+    LastRecorded VARCHAR(50), 
+    WorkSplit VARCHAR(50),
+    PRIMARY KEY(Username)
+);
+'''
+#Insert Row
+def insertNewPhysicalData(Username: str, LastMuscleGroup: str, Injury: str, LastRecorded: str, WorkSplit: str):
+    conn = db.connect()
+    query = 'Insert Into PhysicalData (Username, LastMuscleGroup, Injury, LastRecorded, WorkSplit) VALUES ("{}", "{}", "{}", "{}", "{}");'.format(Username, LastMuscleGroup, Injury, LastRecorded, WorkSplit)
+    conn.execute(query)
+    conn.close()
+
+#Search by username
+def fetchPhysicalData(Username: str) -> dict:
+    conn = db.connect()
+    statement = 'SELECT LastMuscleGroup, Injury, LastRecorded, WorkSplit FROM PhysicalData WHERE Username LIKE "%{0}%" ;'.format(Username)
+    query = text(statement)
+    print(query)
+    query_results = conn.execute(query).fetchall() #Check to make sure this returns correctly
+    conn.close()
+    return query_results
+
+#update by username
+def updatePhysicalDataLastMuscleGroup(Username: int, text: str) -> None:
+    conn = db.connect()
+    query = 'Update PhysicalData set LastMuscleGroup = "{}" where Username = {};'.format(text, Username)
+    conn.execute(query)
+    conn.close()
+
+def updatePhysicalDataInjury(Username: int, text: str) -> None:
+    conn = db.connect()
+    query = 'Update PhysicalData set Injury = "{}" where Username = {};'.format(text, Username)
+    conn.execute(query)
+    conn.close()
+
+def updatePhysicalDataLastRecorded(Username: int, text: str) -> None:
+    conn = db.connect()
+    query = 'Update PhysicalData set LastRecorded = "{}" where Username = {};'.format(text, Username)
+    conn.execute(query)
+    conn.close()
+
+def updatePhysicalDataWorkSplit(Username: int, text: str) -> None:
+    conn = db.connect()
+    query = 'Update PhysicalData set WorkSplit = "{}" where Username = {};'.format(text, Username)
+    conn.execute(query)
+    conn.close()
+
+
+#Delete by username
+def removePhysicalDataByUsername(Username: str) -> None:
+    """ remove entries based on task ID """
+    conn = db.connect()
+    query = 'Delete From PhysicalData where Username={};'.format(Username)
+    conn.execute(query)
+    conn.close()
+
+#Advanced Query
+def getAvailibleReservations(username: str) -> dict:
+    conn = db.connect()
+    if len(username) > 0:
+        statement = 'SELECT ReservationID, GymName, StartTime, EndTime, Day, Month, Year \
+            FROM Reservations r JOIN Gyms g USING (GymID) WHERE GymID IN \
+            (SELECT GymID FROM Users u JOIN Gyms g USING(University) WHERE Username = "{}") \
+            AND r.Username IS NULL ORDER BY Day DESC, StartTime DESC;'.format(username)
+    query = text(statement)
+    print(query)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    reservations = []
+    for result in query_results:
+        item = {
+            "ReservationID": result[0],
+            "GymName": result[1],
+            "StartTime": result[2],
+            "EndTime": result[3],
+            "Day": result[4],
+            "Month": result[5],
+            "Year": result[6],
+        }
+        reservations.append(item)
+    return reservations
+
+
