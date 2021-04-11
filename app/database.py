@@ -77,7 +77,6 @@ def update_gym_status(GymID: int, text:str) -> None:
     conn.execute(query)
     conn.close()
 
-
 def insert_new_gym(GymName: str, University: str, Capacity: int, Status: str):
     conn = db.connect()
     query = 'Insert Into Gyms (GymName, University, Capacity, Status) VALUES ("{}", "{}", "{}", "{}");'.format(GymName, University, Capacity, Status)
@@ -90,3 +89,80 @@ def remove_gym_by_id(GymID: int) -> None:
     query = 'Delete From Gyms where GymID={};'.format(GymID)
     conn.execute(query)
     conn.close()
+
+def update_user_name(email: str, text: str) -> None:
+    conn = db.connect()
+    query = 'Update Users set Username = "{1}" where Email = {0};'.format(text, email)
+    conn.execute(query)
+    conn.close()
+
+def update_user_uni(email: str, text: str) -> None:
+    conn = db.connect()
+    query = 'Update Users set University = "{1}" where Email = {0};'.format(text, email)
+    conn.execute(query)
+    conn.close()
+
+def update_user_fname(email: str, text: str) -> None:
+    conn = db.connect()
+    query = 'Update Users set Firstname = "{1}" where Email = {0};'.format(text, email)
+    conn.execute(query)
+    conn.close()
+
+def update_user_lname(email: str, text: str) -> None:
+    conn = db.connect()
+    query = 'Update Users set Lastname = "{1}" where Email = {0};'.format(text, email)
+    conn.execute(query)
+    conn.close()
+
+def update_user_password(email: str, text: str) -> None:
+    conn = db.connect()
+    query = 'Update Users set Password = "{1}" where Email = {0};'.format(text, email)
+    conn.execute(query)
+    conn.close()
+
+def update_user_covidstatus(email: str, text: str) -> None:
+    conn = db.connect()
+    query = 'Update Users set CovidStatus = "{1}" where Email = {0};'.format(text, email)
+    conn.execute(query)
+    conn.close()
+
+def insert_new_user(FirstName: str, LastName: str, Email: str, University: str, Username: str, Password: str, CovidStatus: str):
+    conn = db.connect()
+    query = 'Insert Into Users (FirstName, LastName, Email, University, Username, Password, CovidStatus) VALUES ("{}", "{}", "{}", "{}");'.format(FirstName, LastName, Email, University, Username, Password, CovidStatus)
+    conn.execute(query)
+    conn.close()
+
+def remove_user_by_email(Email: str) -> None:
+    conn = db.connect()
+    query = 'Delete From Users where Email={};'.format(Email)
+    conn.execute(query)
+    conn.close()
+
+def fetch_users(username: str, university: str) -> dict:
+    conn = db.connect()
+    if len(username) > 0 and len(university) > 0:
+        statement = 'SELECT Email, University, Username, CovidStatus FROM Users WHERE Username LIKE "%{0}%" AND University LIKE "%{1}%" ORDER BY Username DESC, University ASC;'.format(username, university)
+    elif len(username) > 0:
+        statement = 'SELECT Email, University, Username, CovidStatus FROM Users WHERE Username LIKE "%{0}%" ORDER BY Username DESC, University ASC;'.format(username)
+    elif len(university) > 0:
+        statement = 'SELECT Email, University, Username, CovidStatus FROM Users WHERE University LIKE "%{0}%" ORDER BY University ASC, Username DESC;'.format(university)
+    else:
+        statement = 'SELECT Email, University, Username, CovidStatus FROM Users ORDER BY Username DESC, University ASC;'
+    query = text(statement)
+    print(query)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    users_list = []
+    for result in query_results:
+        item = {
+            "First Name": result[0],
+            "Last Name": result[1],
+            "Email": result[2],
+            "University": result[3],
+            "Username": result[4],
+            "Password": result[5],
+            "Covid Status": result[6],
+        }
+        users_list.append(item)
+    return users_list
+	

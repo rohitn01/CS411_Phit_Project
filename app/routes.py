@@ -89,3 +89,84 @@ def removegympage():
         db_helper.remove_gym_by_id(gymid)
         return render_template("removegym.html")
     return render_template("removegym.html")
+
+    @app.route("/users", methods=['GET', 'POST'])
+def userpage():
+    print(request.method)
+    # Check if it is a post req
+    if request.method == 'POST':
+        # collect gymname and university information from search bar(s) in users.html
+        username = request.form.get("Username")
+        print(username)
+        university = request.form.get("University")
+        print(university)
+        # call fetch_users with passed parameters and get query return list.
+        items = db_helper.fetch_users(username, university)
+        print("test")
+        # return rendered template of gyms.html with list as items
+        return render_template("users.html", items=items)
+    else:
+        #If not POST req occurs, display all gyms to user
+        items = db_helper.fetch_users("", "")
+        return render_template("users.html", items=items)
+    return render_template("users.html")
+
+
+@app.route("/adduser", methods=['GET', 'POST'])
+def adduserpage():
+    print(request.method)
+    if request.method == 'POST':
+        firstname = request.form.get("firstname")
+        print(firstname)
+        lastname = request.form.get("lastname")
+        print(lastname)
+        email = request.form.get("email")
+	    print(email)
+	    university = request.form.get("university")
+        print(university)
+	    username = request.form.get("username")
+        print(username)
+	    password = request.form.get("password")
+        print(password)
+        covidstatus = request.form.get("covidstatus")
+        print(covidstatus)
+        db_helper.insert_new_user(firstname, lastname, email, university, username, password, covidstatus)
+        return render_template("adduser.html")
+    return render_template("adduser.html")
+
+@app.route("/updateuser", methods=['GET', 'POST'])
+def updateuserpage():
+    print(request.method)
+    if request.method == 'POST':
+	email = request.form.get("email")
+	print(email)
+        firstname = request.form.get("firstname")
+        lastname = request.form.get("lastname")
+	university = request.form.get("university")
+	username = request.form.get("username")
+	password = request.form.get("password")
+	covidstatus = request.form.get("covidstatus")
+        if len(firstname) > 0:
+            db_helper.update_user_fname(firstname, email)
+        if len(lastname) > 0:
+            db_helper.update_user_lname(lastname, email)
+        if len(university) > 0:
+            db_helper.update_user_uni(university, email)
+        if len(username) > 0:
+            db_helper.update_user_name(username, email)
+        if len(password) > 0:
+            db_helper.update_user_password(password, email)
+        if len(covidstatus) > 0:
+            db_helper.update_user_covidstatus(covidstatus, email)
+        return render_template("updateuser.html")
+    return render_template("updateuser.html")
+
+@app.route("/removeuser", methods=['GET', 'POST'])
+def removeuserpage():
+    print(request.method)
+    if request.method == 'POST':
+        email = request.form.get("email")
+        print(email)
+        db_helper.remove_user_by_email(email)
+        return render_template("deleteuser.html")
+    return render_template("deleteuser.html")
