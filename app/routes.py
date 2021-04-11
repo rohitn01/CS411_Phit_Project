@@ -33,24 +33,6 @@ def gympage():
         return render_template("gyms.html", items=items)
     return render_template("gyms.html")
 
-@app.route("/progress", methods=['GET', 'POST'])
-def progresspage():
-    print(request.method)
-    # Check if it is a post req
-    if request.method == 'POST':
-        # collect gymname and university information from search bar(s) in gyms.html
-        exercise = request.form.get("exercise")
-        print(exercise)
-        # call fetch_gyms with passed parameters and get query return list.
-        items = db_helper.fetch_progress(exercise)
-        print("test")
-        # return rendered template of gyms.html with list as items
-        return render_template("progress.html", items=items)
-    else:
-        #If not POST req occurs, display all gyms to user
-        items = db_helper.fetch_progress("")
-        return render_template("progress.html", items=items)
-    return render_template("progress.html")
 
 @app.route("/findbuddies", methods=['GET', 'POST'])
 def buddypage():
@@ -163,3 +145,22 @@ def removeprogpage():
         db_helper.remove_progress_by_id(progressid)
         return render_template("removeprogress.html")
     return render_template("removeprogress.html")
+
+@app.route("/progress", methods=['GET', 'POST'])
+def progresspage():
+    print(request.method)
+    # Check if it is a post req
+    if request.method == 'POST':
+        # collect gymname and university information from search bar(s) in gyms.html
+        exercise = request.form.get("exercise")
+        print(exercise)
+        # call fetch_gyms with passed parameters and get query return list.
+        items = db_helper.fetch_progress(exercise)
+        print("test")
+        # return rendered template of gyms.html with list as items
+        return render_template("progress.html", items=items)
+    else:
+        #If not POST req occurs, display all gyms to user
+        items = db_helper.fetch_progress("")
+        return render_template("progress.html", items=items)
+    return render_template("progress.html")
