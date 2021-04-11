@@ -29,27 +29,6 @@ def fetch_gyms(gymname: str, university: str) -> dict:
         gyms_list.append(item)
     return gyms_list
 
-def fetch_progress(exercise: str) -> dict:
-    conn = db.connect()
-    if len(exercise) > 0:
-        statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress WHERE Exercise LIKE "%{0}%" ORDER BY Exercise ASC;'.format(exercise)
-    else:
-        statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress ORDER BY Exercise ASC;'
-    query = text(statement)
-    print(query)
-    query_results = conn.execute(query).fetchall()
-    conn.close()
-    progress_list = []
-    for result in query_results:
-        item = {
-            "ProgressID": result[0],
-            "Exercise": result[1],
-            "Set_Size": result[2],
-            "Exercise_Stat": result[3]
-        }
-        progress_list.append(item)
-    return progress_list
-
 def fetch_buddies(username: str) -> dict:
     conn = db.connect()
     if len(username) > 0:
@@ -74,23 +53,6 @@ def fetch_buddies(username: str) -> dict:
         }
         buddy_list.append(item)
     return buddy_list
-
-def fetch_progmax(exercise: str) -> dict:
-    conn = db.connect()
-    if len(exercise) > 0:
-        statement = 'SELECT Exercise, MAX(Set_Size) From Users Natural Join Progress WHERE Exercise LIKE "%{0}%" GROUP BY Exercise'.format(exercise)
-    query = text(statement)
-    print(query)
-    query_results = conn.execute(query).fetchall()
-    conn.close()
-    progmax_list = []
-    for result in query_results:
-        item = {
-            "Exercise": result[0],
-            "Max_Set_Size": result[1]
-        }
-        progmax_list.append(item)
-    return progmax_list
   
 def update_gym_name(GymID: int, text: str) -> None:
     conn = db.connect()
@@ -116,6 +78,62 @@ def update_gym_status(GymID: int, text:str) -> None:
     conn.close()
 
 ####
+
+###
+def insert_new_gym(GymName: str, University: str, Capacity: int, Status: str):
+    conn = db.connect()
+    query = 'Insert Into Gyms (GymName, University, Capacity, Status) VALUES ("{}", "{}", "{}", "{}");'.format(GymName, University, Capacity, Status)
+    conn.execute(query)
+    conn.close()
+
+
+def remove_gym_by_id(GymID: int) -> None:
+    """ remove entries based on task ID """
+    conn = db.connect()
+    query = 'Delete From Gyms where GymID={};'.format(GymID)
+    conn.execute(query)
+    conn.close()
+
+
+def fetch_progress(exercise: str) -> dict:
+    conn = db.connect()
+    if len(exercise) > 0:
+        statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress WHERE Exercise LIKE "%{0}%" ORDER BY Exercise ASC;'.format(exercise)
+    else:
+        statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress ORDER BY Exercise ASC;'
+    query = text(statement)
+    print(query)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    progress_list = []
+    for result in query_results:
+        item = {
+            "ProgressID": result[0],
+            "Exercise": result[1],
+            "Set_Size": result[2],
+            "Exercise_Stat": result[3]
+        }
+        progress_list.append(item)
+    return progress_list
+
+
+def fetch_progmax(exercise: str) -> dict:
+    conn = db.connect()
+    if len(exercise) > 0:
+        statement = 'SELECT Exercise, MAX(Set_Size) From Users Natural Join Progress WHERE Exercise LIKE "%{0}%" GROUP BY Exercise'.format(exercise)
+    query = text(statement)
+    print(query)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    progmax_list = []
+    for result in query_results:
+        item = {
+            "Exercise": result[0],
+            "Max_Set_Size": result[1]
+        }
+        progmax_list.append(item)
+    return progmax_list
+
 def update_prog_exer(exercise: str, ProgressID:int) -> None:
     conn = db.connect()
     query = 'Update Progress set Exercise = "{0}" where ProgressID = {1};'.format(exercise, ProgressID)
@@ -132,23 +150,10 @@ def update_prog_stat(exercise_stat: int, ProgressID:int) -> None:
     query = 'Update Progress set Exercise_Stat = {0} where ProgressID = {1};'.format(exercise_stat, ProgressID)
     conn.execute(query)
     conn.close()
-###
-def insert_new_gym(GymName: str, University: str, Capacity: int, Status: str):
-    conn = db.connect()
-    query = 'Insert Into Gyms (GymName, University, Capacity, Status) VALUES ("{}", "{}", "{}", "{}");'.format(GymName, University, Capacity, Status)
-    conn.execute(query)
-    conn.close()
 
 def insert_new_progress(ProgressID: int, Exercise: str, Set_Size: int, Exercise_Stat: int):
     conn = db.connect()
     query = 'Insert Into Progress (ProgressID, Exercise, Set_Size, Exercise_Stat) VALUES ("{}", "{}", "{}", "{}");'.format(ProgressID, Exercise, Set_Size, Exercise_Stat)
-    conn.execute(query)
-    conn.close()
-
-def remove_gym_by_id(GymID: int) -> None:
-    """ remove entries based on task ID """
-    conn = db.connect()
-    query = 'Delete From Gyms where GymID={};'.format(GymID)
     conn.execute(query)
     conn.close()
 
