@@ -44,15 +44,6 @@ def buddypage():
         return render_template("findbuddies.html", items=items)
     return render_template("findbuddies.html")
 
-@app.route("/findmaxprogress", methods=['GET', 'POST'])
-def maxpage():
-    print(request.method)
-    if request.method == 'POST':
-        exercise = request.form.get("exercise")
-        items = db_helper.fetch_progmax(exercise)
-        print("test")
-        return render_template("findmaxprogress.html", items=items)
-    return render_template("findmaxprogress.html")
 
 @app.route("/addgym", methods=['GET', 'POST'])
 def addgympage():
@@ -70,21 +61,6 @@ def addgympage():
         return render_template("addgym.html")
     return render_template("addgym.html")
 
-@app.route("/addprogress", methods=['GET', 'POST'])
-def addprogpage():
-    print(request.method)
-    if request.method == 'POST':
-        progressid = request.form.get("progressid")
-        print(progressid)
-        exercise = request.form.get("exercise")
-        print(exercise)
-        set_size = request.form.get("set_size")
-        print(set_size)
-        exercise_stat = request.form.get("exercise_stat")
-        print(exercise_stat)
-        db_helper.insert_new_progress(progressid, exercise, set_size, exercise_stat)
-        return render_template("addprogress.html")
-    return render_template("addprogress.html")
 
 @app.route("/updategym", methods=['GET', 'POST'])
 def updategympage():
@@ -107,23 +83,6 @@ def updategympage():
         return render_template("updategym.html")
     return render_template("updategym.html")
 
-@app.route("/updateprogress", methods=['GET', 'POST'])
-def updateprogpage():
-    print(request.method)
-    if request.method == 'POST':
-        progressid = request.form.get("progressid")
-        print(progressid)
-        exercise = request.form.get("exercise")
-        set_size = request.form.get("set_size")
-        exercise_stat = request.form.get("exercise_stat")
-        if len(exercise) > 0:
-            db_helper.update_prog_exer(exercise, progressid)
-        if len(set_size) > 0:
-            db_helper.update_prog_set(set_size, progressid)
-        if len(exercise_stat) > 0:
-            db_helper.update_prog_stat(exercise_stat, progressid)
-        return render_template("updateprogress.html")
-    return render_template("updateprogress.html")
 
 @app.route("/removegym", methods=['GET', 'POST'])
 def removegympage():
@@ -135,16 +94,6 @@ def removegympage():
         return render_template("removegym.html")
     return render_template("removegym.html")
 
-
-@app.route("/removeprogress", methods=['GET', 'POST'])
-def removeprogpage():
-    print(request.method)
-    if request.method == 'POST':
-        progressid = request.form.get("progressid")
-        print(progressid)
-        db_helper.remove_progress_by_id(progressid)
-        return render_template("removeprogress.html")
-    return render_template("removeprogress.html")
 
 @app.route("/progress", methods=['GET', 'POST'])
 def progresspage():
@@ -164,3 +113,57 @@ def progresspage():
         items = db_helper.fetch_progress("")
         return render_template("progress.html", items=items)
     return render_template("progress.html")
+
+@app.route("/findmaxprogress", methods=['GET', 'POST'])
+def maxpage():
+    print(request.method)
+    if request.method == 'POST':
+        exercise = request.form.get("exercise")
+        items = db_helper.fetch_progmax(exercise)
+        print("test")
+        return render_template("findmaxprogress.html", items=items)
+    return render_template("findmaxprogress.html")
+
+@app.route("/addprogress", methods=['GET', 'POST'])
+def addprogpage():
+    print(request.method)
+    if request.method == 'POST':
+        progressid = request.form.get("progressid")
+        print(progressid)
+        exercise = request.form.get("exercise")
+        print(exercise)
+        set_size = request.form.get("set_size")
+        print(set_size)
+        exercise_stat = request.form.get("exercise_stat")
+        print(exercise_stat)
+        db_helper.insert_new_progress(progressid, exercise, set_size, exercise_stat)
+        return render_template("addprogress.html")
+    return render_template("addprogress.html")
+
+@app.route("/updateprogress", methods=['GET', 'POST'])
+def updateprogpage():
+    print(request.method)
+    if request.method == 'POST':
+        progressid = request.form.get("progressid")
+        print(progressid)
+        exercise = request.form.get("exercise")
+        set_size = request.form.get("set_size")
+        exercise_stat = request.form.get("exercise_stat")
+        if len(exercise) > 0:
+            db_helper.update_prog_exer(exercise, progressid)
+        if len(set_size) > 0:
+            db_helper.update_prog_set(set_size, progressid)
+        if len(exercise_stat) > 0:
+            db_helper.update_prog_stat(exercise_stat, progressid)
+        return render_template("updateprogress.html")
+    return render_template("updateprogress.html")
+
+@app.route("/removeprogress", methods=['GET', 'POST'])
+def removeprogpage():
+    print(request.method)
+    if request.method == 'POST':
+        progressid = request.form.get("progressid")
+        print(progressid)
+        db_helper.remove_progress_by_id(progressid)
+        return render_template("removeprogress.html")
+    return render_template("removeprogress.html")
