@@ -14,4 +14,4 @@ handlers:
   static_dir: static/script
 
 - url: /styles
-  static_dir: static/styles
+  static_dir: static/styles 
