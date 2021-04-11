@@ -1,0 +1,39 @@
+<center><h1>Find Availible Reservations</h1></center>
+<nav>
+    <ul>
+        <li>
+            <a href="/">Home</a>
+            <a href="/gyms">Gyms</a>
+            <a href="/PhysicalData">Physical Data</a>
+        </li>
+    </ul>
+</nav>
+<center>
+<form method = "POST">
+    <input type="text" name="Username" placeholder="Enter your username"/>
+    <input type="submit"/> 
+</form>
+<table border = '1'>
+    <tr>
+        <td>Reservation ID</td>
+        <td>GymName</td>
+        <td>Start Time</td>
+        <td>End Time</td>
+        <td>Day</td>
+        <td>Month</td>
+        <td>Year</td>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{item.ReservationID}}</td>
+        <td>{{item.GymName}}</td>
+        <td>{{item.StartTime}}</td>
+        <td>{{item.EndTime}}</td>
+        <td>{{item.Day}}</td>
+        <td>{{item.Month}}</td>
+        <td>{{item.Year}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</center>
