@@ -77,6 +77,13 @@ def update_gym_status(GymID: int, text:str) -> None:
     conn.execute(query)
     conn.close()
 
+
+# zohair stuff
+
+
+
+
+
 def insert_new_gym(GymName: str, University: str, Capacity: int, Status: str):
     conn = db.connect()
     query = 'Insert Into Gyms (GymName, University, Capacity, Status) VALUES ("{}", "{}", "{}", "{}");'.format(GymName, University, Capacity, Status)
