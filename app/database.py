@@ -318,13 +318,13 @@ def remove_user_by_email(Email: str) -> None:
 def fetch_users(username: str, university: str) -> dict:
     conn = db.connect()
     if len(username) > 0 and len(university) > 0:
-        statement = 'SELECT Email, University, Username, CovidStatus FROM Users WHERE Username LIKE "%{0}%" AND University LIKE "%{1}%" ORDER BY Username DESC, University ASC;'.format(username, university)
+        statement = 'SELECT * FROM Users WHERE Username LIKE "%{0}%" AND University LIKE "%{1}%" ORDER BY Username DESC, University ASC;'.format(username, university)
     elif len(username) > 0:
-        statement = 'SELECT Email, University, Username, CovidStatus FROM Users WHERE Username LIKE "%{0}%" ORDER BY Username DESC, University ASC;'.format(username)
+        statement = 'SELECT * FROM Users WHERE Username LIKE "%{0}%" ORDER BY Username DESC, University ASC;'.format(username)
     elif len(university) > 0:
-        statement = 'SELECT Email, University, Username, CovidStatus FROM Users WHERE University LIKE "%{0}%" ORDER BY University ASC, Username DESC;'.format(university)
+        statement = 'SELECT * FROM Users WHERE University LIKE "%{0}%" ORDER BY University ASC, Username DESC;'.format(university)
     else:
-        statement = 'SELECT Email, University, Username, CovidStatus FROM Users ORDER BY Username DESC, University ASC;'
+        statement = 'SELECT * FROM Users ORDER BY Username DESC, University ASC;'
     query = text(statement)
     print(query)
     query_results = conn.execute(query).fetchall()
@@ -332,10 +332,13 @@ def fetch_users(username: str, university: str) -> dict:
     users_list = []
     for result in query_results:
         item = {
-            "Email": result[0],
-            "University": result[1],
-            "Username": result[2],
-            "Covid Status": result[3]
+            "First Name": result[0],
+            "Last Name": result[1],
+            "Email": result[2],
+            "University": result[3],
+            "Username": result[4],
+            "Password": result[5],
+            "Covid Status": result[6],
         }
         users_list.append(item)
     return users_list

@@ -254,9 +254,9 @@ def userpage():
     # Check if it is a post req
     if request.method == 'POST':
         # collect gymname and university information from search bar(s) in users.html
-        username = request.form.get("Username")
+        username = request.form.get("username")
         print(username)
-        university = request.form.get("University")
+        university = request.form.get("university")
         print(university)
         # call fetch_users with passed parameters and get query return list.
         items = db_helper.fetch_users(username, university)
