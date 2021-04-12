@@ -346,11 +346,17 @@ def fetch_users(username: str, university: str) -> dict:
 def fetch_lift_records(exercise: str) -> dict:
     conn = db.connect()
     if len(exercise) > 0:
-        statement = 'CREATE VIEW userMaxes as SELECT DISTINCT pr.Username, u.University, pr.Exercise, MAX(tempUser.Exercise_Stat) as maxUser FROM Progress pr NATURAL JOIN Users u, (SELECT p.Username, p.Exercise_Stat FROM Progress p WHERE p.Exercise = "{0}") as tempUser WHERE pr.Exercise = "{0}" and pr.Username = tempUser.Username GROUP BY pr.Username, u.University;\n'.format(exercise) 
-        str2 = 'SELECT DISTINCT u.University, um.Exercise, MAX(um.maxUser) as maxExercise FROM userMaxes um LEFT JOIN Users u USING(Username) GROUP BY u.University, um.Exercise ORDER BY maxExercise DESC LIMIT 15\n'
-        str3 = 'DROP VIEW IF EXISTS userMaxes'
+        statement = 'CREATE VIEW userMaxes as \
+            SELECT DISTINCT pr.Username, u.University, pr.Exercise, MAX(tempUser.Exercise_Stat) as maxUser \
+            FROM Progress pr NATURAL JOIN Users u, (SELECT p.Username, p.Exercise_Stat FROM Progress p WHERE p.Exercise = "{}") as tempUser \
+            WHERE pr.Exercise = "{}" and pr.Username = tempUser.Username GROUP BY pr.Username, u.University;\n \
+            SELECT DISTINCT u.University, um.Exercise, MAX(um.maxUser) as maxExercise \
+            FROM userMaxes um LEFT JOIN Users u USING(Username) \
+            GROUP BY u.University, um.Exercise \
+            ORDER BY maxExercise DESC LIMIT 15\n \
+            DROP VIEW IF EXISTS userMaxes'.format(exercise) 
 
-    conn.execute(statement+str2+str3)
+    conn.execute(statement)
     query_results = conn.execute(query).fetchall()
     conn.close()
     lift_list = []
