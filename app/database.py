@@ -348,8 +348,8 @@ def fetch_lift_records(exercise: str) -> dict:
     if len(exercise) > 0:
         statement = 'CREATE VIEW userMaxes as \
             SELECT DISTINCT pr.Username, u.University, pr.Exercise, MAX(tempUser.Exercise_Stat) as maxUser \
-            FROM Progress pr NATURAL JOIN Users u, (SELECT p.Username, p.Exercise_Stat FROM Progress p WHERE p.Exercise = "{}") as tempUser \
-            WHERE pr.Exercise = "{}" and pr.Username = tempUser.Username GROUP BY pr.Username, u.University;\n \
+            FROM Progress pr NATURAL JOIN Users u, (SELECT p.Username, p.Exercise_Stat FROM Progress p WHERE p.Exercise = "{0}") as tempUser \
+            WHERE pr.Exercise = "{0}" and pr.Username = tempUser.Username GROUP BY pr.Username, u.University;\n \
             SELECT DISTINCT u.University, um.Exercise, MAX(um.maxUser) as maxExercise \
             FROM userMaxes um LEFT JOIN Users u USING(Username) \
             GROUP BY u.University, um.Exercise \
