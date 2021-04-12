@@ -326,3 +326,13 @@ def removeuserpage():
         db_helper.remove_user_by_email(email)
         return render_template("deleteuser.html")
     return render_template("deleteuser.html")
+
+@app.route("/findliftrecord", methods=['GET', 'POST'])
+def liftpage():
+    print(request.method)
+    if request.method == 'POST':
+        exercise = request.form.get("exercise")
+        items = db_helper.fetch_lift_records(exercise)
+        print("test")
+        return render_template("findliftrecord.html", items=items)
+    return render_template("findliftrecord.html")

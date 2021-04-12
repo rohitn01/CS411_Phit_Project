@@ -332,13 +332,13 @@ def fetch_users(username: str, university: str) -> dict:
     users_list = []
     for result in query_results:
         item = {
-            "First Name": result[0],
-            "Last Name": result[1],
+            "FirstName": result[0],
+            "LastName": result[1],
             "Email": result[2],
             "University": result[3],
             "Username": result[4],
             "Password": result[5],
-            "Covid Status": result[6],
+            "CovidStatus": result[6],
         }
         users_list.append(item)
     return users_list

@@ -1,0 +1,30 @@
+<center><h1>Find University Records!</h1></center>
+<nav>
+    <ul>
+        <li>
+            <a href="/">Home</a>
+            <a href="/progress">Progress</a>
+        </li>
+    </ul>
+</nav>
+<center>
+<form method = "POST">
+    <input type="text" name="exercise" placeholder="put in your exercise"/>
+    <input type="submit"/> 
+</form>
+<table border = '1'>
+    <tr>
+        <td>University</td>
+        <td>Exercise</td>
+        <td>Record</td>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{item.University}}</td>
+        <td>{{item.Exercise}}</td>
+        <td>{{item.Record}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</center>
