@@ -1,0 +1,41 @@
+<center><h1>Users</h1></center>
+<nav>
+    <ul>
+        <li>
+            <a href="/">Home</a>
+            <a href="/users">Users</a>
+        </li>
+    </ul>
+</nav>
+<center>
+    <a href ="/addusers">Sign up</a>
+    <a href ="/updateusers">Update your information</a>
+    <a href ="/deleteuser">Delete your account</a>
+<form method = "POST">
+    <input type="text" name="username" placeholder="Search by username..."/>
+    <input type="submit"/> 
+</form>
+<table border = '1'>
+    <tr>
+        <td>First Name</td>
+        <td>Last Name</td>
+        <td>Email</td>
+        <td>University</td>
+        <td>Username</td>
+        <td>Password</td>
+        <td>CovidStatus</td>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{item.FirstName}}</td>
+        <td>{{item.LastName}}</td>
+        <td>{{item.Email}}</td>
+        <td>{{item.University}}</td>
+        <td>{{item.Username}}</td>
+        <td>{{item.Password}}</td>
+        <td>{{item.CovidStatus}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</center>

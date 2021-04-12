@@ -1,0 +1,35 @@
+<center><h1>Progress</h1></center>
+<nav>
+    <ul>
+        <li>
+            <a href="/">Home</a>
+            <a href="/progress">Progress</a>
+        </li>
+    </ul>
+</nav>
+<center>
+    <a href ="/addprogress">Add A Progress</a>
+    <a href ="/updateprogress">Update A Progress</a>
+    <a href ="/removeprogress">Remove Progress</a>
+<form method = "POST">
+    <input type="text" name="exercise" placeholder="Search by Exercise..."/>
+    <input type="submit"/> 
+</form>
+<table border = '1'>
+    <tr>
+        <td>ProgressID #</td>
+        <td>Exercise</td>
+        <td>Set_Size</td>
+        <td>Exercise_Stat</td>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{item.ProgressID}}</td>
+        <td>{{item.Exercise}}</td>
+        <td>{{item.Set_Size}}</td>
+        <td>{{item.Exercise_Stat}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</center>
