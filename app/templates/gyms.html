@@ -9,8 +9,6 @@
 </nav>
 <center>
     <a href ="/addgym">Add A Gym</a>
-    <a href ="/updategym">Update A Gym</a>
-    <a href ="/removegym">Remove Gym</a>
 <form method = "POST">
     <input type="text" name="gymname" placeholder="Search by Gym Name..."/>
     <input type="text" name="university" placeholder="Search by University..."/>
@@ -23,6 +21,8 @@
         <td>University</td>
         <td>Capacity</td>
         <td>Status</td>
+        <td>Update Gym</td>
+        <td>Remove Gym</td>
     </tr>
     {% for item in items %}
     <tr>
@@ -31,6 +31,12 @@
         <td>{{item.University}}</td>
         <td>{{item.Capacity}}</td>
         <td>{{item.Status}}</td>
+        <td>
+            <a href ="/updategym">Edit</a>
+        </td>
+        <td>
+            <a href ="/removegym">Remove</a>
+        </td>
     </tr>
     {% endfor %}
 </table>

@@ -11,9 +11,31 @@
 <form method = "POST">
     <input type="text" name="gymid" placeholder="Enter GymID"/>
     <input type="text" name="gymname" placeholder="New Gym Name"/>
-    <input type="text" name="university" placeholder="New University"/>
+    <label for="university">Choose a University:</label>
+    <select name="university" id="university" required>
+        <option></option>
+        <option value="University of Illinois">University of Illinois</option>
+        <option value="Rutgers">Rutgers</option>
+        <option value="Northwestern">Northwestern</option>
+        <option value="Purdue">Purdue</option>
+        <option value="Ohio State">Ohio State</option>
+        <option value="Penn State">Penn State</option>
+        <option value="Michigan State">Michigan State</option>
+        <option value="John Cena University">John Cena University</option>
+        <option value="University of Indiana">University of Indiana</option>
+        <option value="University of Iowa">University of Iowa</option>
+        <option value="University of Maryland">University of Maryland</option>
+        <option value="University of Michigan">University of Michigan</option>
+        <option value="University of Minnesota">University of Minnesota</option>
+        <option value="University of Nebraska">University of Nebraska</option>
+        <option value="University of Wisconsin">University of Wisconsin</option>
+        </select>
     <input type="text" name="capacity" placeholder="New Capacity"/>
-    <input type="text" name="status" placeholder="New Status"/>
+    <select name="status" id="status">
+        <option value="UNKNOWN">UNKNOWN</option>
+        <option value="OPEN">OPEN</option>
+        <option value="CLOSED">CLOSED</option>
+        </select>
     <input type="submit"/> 
 </form>
 

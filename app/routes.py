@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, redirect
+from flask import render_template, request, jsonify, redirect, session, url_for, abort
 from app import app
 from app import database as db_helper
 from flask_cors import CORS
@@ -9,6 +9,15 @@ def homepage():
     """ returns rendered homepage """
     
     return render_template("index.html")
+
+@app.route("/login")
+def loginpage():
+    return render_template("index.html")
+
+@app.route("/signup")
+def signuppage():
+    return render_template("index.html")
+
 # Flask route for gyms.html page. Executes as both GET/POST function
 # When post request is passed, function will handle input from gyms.html and pass arguments into
 # fetch_gyms() function to call select query to display search results on screen.

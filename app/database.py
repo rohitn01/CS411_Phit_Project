@@ -355,8 +355,9 @@ def fetch_lift_records(exercise: str) -> dict:
             GROUP BY u.University, um.Exercise \
             ORDER BY maxExercise DESC LIMIT 15\n \
             DROP VIEW IF EXISTS userMaxes'.format(exercise) 
-
-    conn.execute(statement)
+    query = text(statement)
+    print(query)
+    conn.execute(query)
     query_results = conn.execute(query).fetchall()
     conn.close()
     lift_list = []
