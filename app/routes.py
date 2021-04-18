@@ -88,14 +88,32 @@ def updategympage():
             db_helper.update_gym_status(status, gymid)
         return render_template("updategym.html")
     return render_template("updategym.html")
+@app.route("/updategym/<GymID>", methods=['GET', 'POST'])
+def updategymwid(GymID):
+    if request.method == 'POST':
+        gymname = request.form.get("gymname")
+        university = request.form.get("university")
+        capacity = request.form.get("capacity")
+        status = request.form.get("status")
+        if len(gymname) > 0:
+            db_helper.update_gym_name(gymname, GymID)
+        if len(university) > 0:
+            db_helper.update_gym_uni(university, GymID)
+        if len(capacity) > 0:
+            db_helper.update_gym_capacity(capacity, GymID)
+        if len(status) > 0:
+            db_helper.update_gym_status(status, GymID)
+        return render_template("updategym.html")
+    return render_template("updategym.html")
 
-@app.route("/removegym", methods=['GET', 'POST'])
-def removegympage():
+@app.route("/removegym/<GymID>", methods=['GET', 'POST'])
+def removegympage(GymID):
     print(request.method)
     if request.method == 'POST':
-        gymid = request.form.get("gymid")
-        print(gymid)
-        db_helper.remove_gym_by_id(gymid)
+        yes = request.form.get("yes")
+        if yes == True:
+
+            db_helper.remove_gym_by_id(GymID)
         return render_template("removegym.html")
     return render_template("removegym.html")
 

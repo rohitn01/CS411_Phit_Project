@@ -1,17 +1,52 @@
-<h1>Home</h1>
+<head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-<nav>
-    <ul>
-        <li>
-            <a href="/gyms">Gyms</a>
-            <a href="/findbuddies">Find a Buddy!</a>
-            <a href="/PhysicalData">Physical Data</a>
-            <a href="/findReservations">Find a Reservation</a>
-            <a href="/progress">Progress</a>
-            <a href="/findmaxprogress">Find Max Progress!</a>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </head>
+<body>
+    <center>
+    <h1>Phit</h1>
+
+    <nav>
+        <ul>
+            <li>
             <a href="/users">Users</a>
-            <a href="/findliftrecord">Ranked lifts by University!</a>
-            
-        </li>
-    </ul>
-</nav>
+            <div>
+            <div class="dropdown show">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Gyms
+                </a>
+              
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item" href="gyms">Gyms</a>
+                </div>
+            </div>
+            <div class="dropdown show">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Reservations
+                      </a>
+                    
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="findReservations">Make Reservation</a>
+                        <a class="dropdown-item" href="findbuddies">Find Buddies</a>
+                      </div>
+                </div>
+                <div>
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Progress & Records
+                      </a>
+                    
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="PhysicalData">Physical Data</a>
+                        <a class="dropdown-item" href="progress">Progress</a>
+                        <a class="dropdown-item" href="/findmaxprogress">Find Max Progress!</a>
+                        <a class="dropdown-item" href="/findliftrecord">Ranked lifts by University!</a>
+                      </div>
+                </div>
+            </div>
+            </li>
+        </ul>
+    </nav>
+</center>
+</body>
