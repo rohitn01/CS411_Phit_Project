@@ -1,6 +1,17 @@
 from app import db
 from sqlalchemy.sql import text
 
+
+def check_login(username: str, password: str) -> int:
+    conn = db.connect()
+    statement = 'SELECT COUNT(*) FROM Users WHERE Username = "{0}" AND Password = "{1}";'.format(username, password)
+    query = text(statement)
+    print(query)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    result = query_results[0][0]
+    return result
+
 # calls SELECT query to display results from gyms table based on given gymname and univerity. Utilizes SQL alchemy.
 # Returns a list from each tuple returned from query
 def fetch_gyms(gymname: str, university: str) -> dict:

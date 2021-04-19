@@ -1,18 +1,46 @@
-from flask import render_template, request, jsonify, redirect, session, url_for, abort
+from flask import render_template, request, jsonify, redirect, session, url_for, abort, g
 from app import app
 from app import database as db_helper
 from flask_cors import CORS
 CORS(app)
+'''
+class User:
+    def __init__(self, username, password, email, ):
+        self.username = username
+        self.password = password
+    
+    def __repr__(self):
+        return f'<User: {self.username}>'
+'''
+app.secret_key = 'datadummies69'
+@app.before_request
+def before_request():
+    g.user = None
+
+    if 'user_id' in session:
+        user = session['user_id']
+        g.user = user
 
 @app.route("/")
 def homepage():
     """ returns rendered homepage """
-    
+    if not g.user:
+        return redirect(url_for('loginpage'))
     return render_template("index.html")
 
-@app.route("/login")
+@app.route("/login", methods=['GET', 'POST'])
 def loginpage():
-    return render_template("index.html")
+    if request.method == 'POST':
+        session.pop('user_id', None)
+        username = request.form['username']
+        password = request.form['password']
+        verify = db_helper.check_login(username, password)
+        if verify == 1:
+            session['user_id'] = username
+            return redirect(url_for('homepage'))
+        return redirect(url_for('loginpage'))
+
+    return render_template("login.html")
 
 @app.route("/signup")
 def signuppage():
@@ -24,6 +52,8 @@ def signuppage():
 @app.route("/gyms", methods=['GET', 'POST'])
 def gympage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     # Check if it is a post req
     if request.method == 'POST':
         # collect gymname and university information from search bar(s) in gyms.html
@@ -45,16 +75,18 @@ def gympage():
 @app.route("/findbuddies", methods=['GET', 'POST'])
 def buddypage():
     print(request.method)
-    if request.method == 'POST':
-        username = request.form.get("username")
-        items = db_helper.fetch_buddies(username)
-        print("test")
-        return render_template("findbuddies.html", items=items)
-    return render_template("findbuddies.html")
+    if not g.user:
+        return redirect(url_for('loginpage'))
+    username = g.user
+    items = db_helper.fetch_buddies(username)
+
+    return render_template("findbuddies.html", items=items)
 
 @app.route("/addgym", methods=['GET', 'POST'])
 def addgympage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         gymname = request.form.get("gymname")
         print(gymname)
@@ -71,6 +103,8 @@ def addgympage():
 @app.route("/updategym", methods=['GET', 'POST'])
 def updategympage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         gymid = request.form.get("gymid")
         print(gymid)
@@ -90,6 +124,8 @@ def updategympage():
     return render_template("updategym.html")
 @app.route("/updategym/<GymID>", methods=['GET', 'POST'])
 def updategymwid(GymID):
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         gymname = request.form.get("gymname")
         university = request.form.get("university")
@@ -109,6 +145,8 @@ def updategymwid(GymID):
 @app.route("/removegym/<GymID>", methods=['GET', 'POST'])
 def removegympage(GymID):
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         yes = request.form.get("yes")
         if yes == True:
@@ -121,6 +159,8 @@ def removegympage(GymID):
 @app.route("/PhysicalData", methods=['GET', 'POST'])
 def PhysicalDataPage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     # Check if it is a post req
     if request.method == 'POST':
         # collect gymname and university information from search bar(s) in gyms.html
@@ -140,17 +180,19 @@ def PhysicalDataPage():
 @app.route("/findReservations", methods=['GET', 'POST'])
 def reservationsPage():
     print(request.method)
-    if request.method == 'POST':
-        username = request.form.get("Username")
-        items = db_helper.getAvailibleReservations(username)
-        print("test")
-        return render_template("findReservations.html", items=items)
-    return render_template("findReservations.html")
+    if not g.user:
+        return redirect(url_for('loginpage'))
+    username = g.user
+    items = db_helper.getAvailibleReservations(username)
+
+    return render_template("findReservations.html", items=items)
 
 @app.route("/addPhysicalData", methods=['GET', 'POST'])
 def addPhysicalDataPage():
     #Username, LastMuscleGroup, Injury, LastRecorded, WorkSplit
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         Username = request.form.get("Username")
         print(Username)
@@ -169,6 +211,8 @@ def addPhysicalDataPage():
 @app.route("/updatePhysicalData", methods=['GET', 'POST'])
 def updatePDpage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         Username = request.form.get("Username")
         print(Username)
@@ -190,6 +234,8 @@ def updatePDpage():
 @app.route("/removePhysicalData", methods=['GET', 'POST'])
 def removePDpage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         Username = request.form.get("Username")
         print(Username)
@@ -202,6 +248,8 @@ def removePDpage():
 @app.route("/progress", methods=['GET', 'POST'])
 def progresspage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     # Check if it is a post req
     if request.method == 'POST':
         # collect gymname and university information from search bar(s) in gyms.html
@@ -221,6 +269,8 @@ def progresspage():
 @app.route("/findmaxprogress", methods=['GET', 'POST'])
 def maxpage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         exercise = request.form.get("exercise")
         items = db_helper.fetch_progmax(exercise)
@@ -231,6 +281,8 @@ def maxpage():
 @app.route("/addprogress", methods=['GET', 'POST'])
 def addprogpage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         progressid = request.form.get("progressid")
         print(progressid)
@@ -247,6 +299,8 @@ def addprogpage():
 @app.route("/updateprogress", methods=['GET', 'POST'])
 def updateprogpage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         progressid = request.form.get("progressid")
         print(progressid)
@@ -265,6 +319,8 @@ def updateprogpage():
 @app.route("/removeprogress", methods=['GET', 'POST'])
 def removeprogpage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         progressid = request.form.get("progressid")
         print(progressid)
@@ -278,6 +334,8 @@ def removeprogpage():
 @app.route("/users", methods=['GET', 'POST'])
 def userpage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     # Check if it is a post req
     if request.method == 'POST':
         # collect gymname and university information from search bar(s) in users.html
@@ -320,6 +378,8 @@ def adduserpage():
 @app.route("/updateusers", methods=['GET', 'POST'])
 def updateuserpage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         email = request.form.get("email")
         print(email)
@@ -347,6 +407,8 @@ def updateuserpage():
 @app.route("/deleteuser", methods=['GET', 'POST'])
 def removeuserpage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         email = request.form.get("email")
         print(email)
@@ -357,6 +419,8 @@ def removeuserpage():
 @app.route("/findliftrecord", methods=['GET', 'POST'])
 def liftpage():
     print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
     if request.method == 'POST':
         exercise = request.form.get("exercise")
         items = db_helper.fetch_lift_records(exercise)
