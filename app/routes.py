@@ -32,6 +32,7 @@ def homepage():
 def loginpage():
     if request.method == 'POST':
         session.pop('user_id', None)
+        g.user = None
         username = request.form['username']
         password = request.form['password']
         verify = db_helper.check_login(username, password)
@@ -52,6 +53,7 @@ def signuppage():
 @app.route("/gyms", methods=['GET', 'POST'])
 def gympage():
     print(request.method)
+    print(g.user)
     if not g.user:
         return redirect(url_for('loginpage'))
     # Check if it is a post req
@@ -142,16 +144,14 @@ def updategymwid(GymID):
         return render_template("updategym.html")
     return render_template("updategym.html")
 
-@app.route("/removegym/<GymID>", methods=['GET', 'POST'])
+@app.route("/removegym/<GymID>", methods=['GET', 'POST', 'DELETE'])
 def removegympage(GymID):
     print(request.method)
+    print(GymID)
     if not g.user:
         return redirect(url_for('loginpage'))
     if request.method == 'POST':
-        yes = request.form.get("yes")
-        if yes == True:
-
-            db_helper.remove_gym_by_id(GymID)
+        db_helper.remove_gym_by_id(GymID)
         return render_template("removegym.html")
     return render_template("removegym.html")
 
@@ -159,6 +159,7 @@ def removegympage(GymID):
 @app.route("/PhysicalData", methods=['GET', 'POST'])
 def PhysicalDataPage():
     print(request.method)
+    print(g.user)
     if not g.user:
         return redirect(url_for('loginpage'))
     # Check if it is a post req

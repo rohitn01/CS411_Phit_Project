@@ -99,6 +99,7 @@ def remove_gym_by_id(GymID: int) -> None:
     """ remove entries based on task ID """
     conn = db.connect()
     query = 'Delete From Gyms where GymID={};'.format(GymID)
+    print(query)
     conn.execute(query)
     conn.close()
 
