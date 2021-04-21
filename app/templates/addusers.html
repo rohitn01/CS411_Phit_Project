@@ -4,20 +4,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
-<center><h1>Update a Gym</h1></center>
+<center><h1>Sign Up</h1></center>
 <nav>
     <ul>
         <li>
             <a href="/home">Home</a>
-            <a href="/gyms">Go Back To Gyms</a>
+            <a href="/users">Go Back To Users</a>
         </li>
     </ul>
 </nav>
 <center>
 <form method = "POST">
-    <input type="text" name="gymname" placeholder="New Gym Name"/>
-    <label for="university">Choose a University:</label>
-    <select name="university" id="university">
+    <input type="text" name="firstname" placeholder="First Name" required/>
+    <input type="text" name="lastname" placeholder="Last Name" required/>
+    <input type="text" name="email" placeholder="Email Address" required/>
+    <label for="university">University:</label>
+    <select name="university" id="university" required>
         <option></option>
         <option value="University of Illinois">University of Illinois</option>
         <option value="Rutgers">Rutgers</option>
@@ -35,13 +37,9 @@
         <option value="University of Nebraska">University of Nebraska</option>
         <option value="University of Wisconsin">University of Wisconsin</option>
         </select>
-    <input type="text" name="capacity" placeholder="New Capacity"/>
-    <select name="status" id="status">
-        <option></option>
-        <option value="UNKNOWN">UNKNOWN</option>
-        <option value="OPEN">OPEN</option>
-        <option value="CLOSED">CLOSED</option>
-        </select>
+    <input type="text" name="username" placeholder="Username" required/>
+    <input type="text" name="password" placeholder="Password" required/>
+    <input type="text" name="covidstatus" placeholder="Do you have Covid?"/>
     <input type="submit"/> 
 </form>
 
