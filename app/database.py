@@ -260,10 +260,10 @@ def fetch_progress(exercise: str) -> dict:
     return progress_list
 
 
-def fetch_progmax(exercise: str) -> dict:
+def fetch_progmax(exercise: str, username: str) -> dict:
     conn = db.connect()
     if len(exercise) > 0:
-        statement = 'SELECT Exercise, MAX(Set_Size) From Users Natural Join Progress WHERE Exercise LIKE "%{0}%" GROUP BY Exercise'.format(exercise)
+        statement = 'SELECT Exercise, MAX(Set_Size) From Users Natural Join Progress WHERE Exercise LIKE "%{0}%" AND Username = "{1}" GROUP BY Exercise'.format(exercise, username)
     query = text(statement)
     print(query)
     query_results = conn.execute(query).fetchall()

@@ -4,7 +4,7 @@ instance_class: F1 # this is the cheapest option
 
 env_variables:
   MYSQL_USER: 'root'
-  MYSQL_PASSWORD: '<ADD DB PASSWORD>'
+  MYSQL_PASSWORD: 'datadummies69'
   MYSQL_DB: 'CS411_Project'
   MYSQL_HOST: '127.0.0.1'
 

@@ -298,7 +298,8 @@ def maxpage():
         return redirect(url_for('loginpage'))
     if request.method == 'POST':
         exercise = request.form.get("exercise")
-        items = db_helper.fetch_progmax(exercise)
+        username = g.user
+        items = db_helper.fetch_progmax(exercise, username)
         print("test")
         return render_template("findmaxprogress.html", items=items)
     return render_template("findmaxprogress.html")
