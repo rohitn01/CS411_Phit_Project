@@ -22,17 +22,22 @@ def before_request():
         g.user = user
 
 @app.route("/")
+def indexpage():
+    return redirect(url_for('loginpage'))
+
+@app.route("/home")
 def homepage():
     """ returns rendered homepage """
     if not g.user:
         return redirect(url_for('loginpage'))
-    return render_template("index.html")
+    print(g.user)
+    return render_template("home.html")
 
 @app.route("/login", methods=['GET', 'POST'])
 def loginpage():
+    session.pop('user_id', None)
+    g.user = None
     if request.method == 'POST':
-        session.pop('user_id', None)
-        g.user = None
         username = request.form['username']
         password = request.form['password']
         verify = db_helper.check_login(username, password)
@@ -150,10 +155,8 @@ def removegympage(GymID):
     print(GymID)
     if not g.user:
         return redirect(url_for('loginpage'))
-    if request.method == 'POST':
-        db_helper.remove_gym_by_id(GymID)
-        return render_template("removegym.html")
-    return render_template("removegym.html")
+    db_helper.remove_gym_by_id(GymID)
+    return redirect(url_for('gympage'))
 
 #Physical Data
 @app.route("/PhysicalData", methods=['GET', 'POST'])
@@ -187,6 +190,27 @@ def reservationsPage():
     items = db_helper.getAvailibleReservations(username)
 
     return render_template("findReservations.html", items=items)
+@app.route("/makereservation/<ReservationID>", methods=['GET', 'POST'])
+def makereservationPage(ReservationID):
+    if not g.user:
+        return redirect(url_for('loginpage'))
+    username = g.user
+    db_helper.update_reservation(username, ReservationID)
+    return redirect(url_for('reservationsPage'))
+
+@app.route("/myreservations", methods=['GET', 'POST'])
+def myreservationsPage():
+    if not g.user:
+        return redirect(url_for('loginpage'))
+    items = db_helper.fetch_my_reservations(g.user)
+    return render_template("myreservations.html", items=items)
+
+@app.route("/cancelreservation/<ReservationID>", methods=['GET', 'POST'])
+def cancelreservationPage(ReservationID):
+    if not g.user:
+        return redirect(url_for('loginpage'))
+    db_helper.cancel_reservation(ReservationID)
+    return redirect(url_for('myreservationsPage'))
 
 @app.route("/addPhysicalData", methods=['GET', 'POST'])
 def addPhysicalDataPage():

@@ -205,7 +205,37 @@ def getAvailibleReservations(Username: str) -> dict:
     
     return reservations
 
+def update_reservation(username: str, ID: int) -> None:
+    conn = db.connect()
+    query = 'Update Reservations set Username = "{0}" where ReservationID = {1};'.format(username, ID)
+    conn.execute(query)
+    conn.close()
 
+def fetch_my_reservations(username: str) -> dict:
+    conn = db.connect()
+    query = 'SELECT GymName, StartTime, EndTime, Day, Month, Year, ReservationID FROM Reservations NATURAL JOIN Gyms WHERE Username = "{0}";'.format(username)
+    print(query)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    progress_list = []
+    for result in query_results:
+        item = {
+            "GymName": result[0],
+            "StartTime": result[1],
+            "EndTime": result[2],
+            "Day": result[3],
+            "Month": result[4],
+            "Year": result[5],
+            "ReservationID": result[6]
+        }
+        progress_list.append(item)
+    return progress_list
+
+def cancel_reservation(ID: int) -> None:
+    conn = db.connect()
+    query = 'Update Reservations set Username = NULL where ReservationID = {0};'.format(ID)
+    conn.execute(query)
+    conn.close()
 #Progress:
 
 def fetch_progress(exercise: str) -> dict:
