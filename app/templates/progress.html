@@ -30,6 +30,8 @@
         <td>Exercise</td>
         <td>Set_Size</td>
         <td>Exercise_Stat</td>
+        <td>Update Progress</td>
+        <td>Remove Remove Progress</td>
     </tr>
     {% for item in items %}
     <tr>
@@ -37,6 +39,12 @@
         <td>{{item.Exercise}}</td>
         <td>{{item.Set_Size}}</td>
         <td>{{item.Exercise_Stat}}</td>
+        <td>
+            <a href ="/updateprogress/{{item.ProgressID}}">Edit</a>
+        </td>
+        <td>
+            <a href ="/removegym/{{item.ProgressID}}">Remove</a>
+        </td>
     </tr>
     {% endfor %}
 </table>

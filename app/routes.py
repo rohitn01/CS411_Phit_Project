@@ -284,13 +284,13 @@ def progresspage():
         exercise = request.form.get("exercise")
         print(exercise)
         # call fetch_gyms with passed parameters and get query return list.
-        items = db_helper.fetch_progress(exercise)
+        items = db_helper.fetch_progress(exercise, g.user)
         print("test")
         # return rendered template of gyms.html with list as items
         return render_template("progress.html", items=items)
     else:
         #If not POST req occurs, display all gyms to user
-        items = db_helper.fetch_progress("")
+        items = db_helper.fetch_progress("", g.user)
         return render_template("progress.html", items=items)
     return render_template("progress.html")
 
@@ -345,17 +345,36 @@ def updateprogpage():
         return render_template("updateprogress.html")
     return render_template("updateprogress.html")
 
-@app.route("/removeprogress", methods=['GET', 'POST'])
-def removeprogpage():
+@app.route("/updateprogress/<ProgressID>", methods=['GET', 'POST'])
+def updateprogpageid(ProgressID):
     print(request.method)
     if not g.user:
         return redirect(url_for('loginpage'))
     if request.method == 'POST':
-        progressid = request.form.get("progressid")
-        print(progressid)
-        db_helper.remove_progress_by_id(progressid)
-        return render_template("removeprogress.html")
-    return render_template("removeprogress.html")
+        #progressid = request.form.get("progressid")
+        #print(progressid)
+        exercise = request.form.get("exercise")
+        set_size = request.form.get("set_size")
+        exercise_stat = request.form.get("exercise_stat")
+        if len(exercise) > 0:
+            db_helper.update_prog_exer(exercise, ProgressID)
+        if len(set_size) > 0:
+            db_helper.update_prog_set(set_size, ProgressID)
+        if len(exercise_stat) > 0:
+            db_helper.update_prog_stat(exercise_stat,ProgressID)
+        return render_template("updateprogress.html")
+    return render_template("updateprogress.html")
+
+@app.route("/removeprogress/<ProgressID>", methods=['GET', 'POST'])
+def removeprogpage(ProgressID):
+    print(request.method)
+    print(ProgressID)
+    if not g.user:
+        return redirect(url_for('loginpage'))
+    #if request.method == 'POST':
+    db_helper.remove_progress_by_id(ProgressID)
+    #return render_template("removeprogress.html")
+    return redirect(url_for('progresspage'))
 
 
 #USERS

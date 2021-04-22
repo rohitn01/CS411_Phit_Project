@@ -153,8 +153,6 @@ def updatePhysicalDataLastMuscleGroup(Username: int, text: str) -> None:
     conn.execute(query)
     conn.close()
 
-<<<<<<< HEAD
-=======
 def updatePhysicalDataInjury(Username: int, text: str) -> None:
     conn = db.connect()
     query = 'Update PhysicalData set Injury = "{}" where Username = "{}";'.format(text, Username)
@@ -242,14 +240,10 @@ def cancel_reservation(ID: int) -> None:
     conn.execute(query)
     conn.close()
 #Progress:
->>>>>>> master
 
-def fetch_progress(exercise: str) -> dict:
+def fetch_progress(exercise: str, username: str) -> dict:
     conn = db.connect()
-    if len(exercise) > 0:
-        statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress WHERE Exercise LIKE "%{0}%" ORDER BY Exercise ASC;'.format(exercise)
-    else:
-        statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress ORDER BY Exercise ASC;'
+    statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress WHERE Exercise LIKE "%{0}%" AND Username LIKE "%{1}%" ORDER BY Exercise ASC;'.format(exercise, username)
     query = text(statement)
     print(query)
     query_results = conn.execute(query).fetchall()
@@ -266,17 +260,10 @@ def fetch_progress(exercise: str) -> dict:
     return progress_list
 
 
-<<<<<<< HEAD
-def fetch_progmax(exercise: str) -> dict:
-    conn = db.connect()
-    if len(exercise) > 0:
-        statement = 'SELECT Exercise, MAX(Set_Size) From Users Natural Join Progress WHERE Exercise LIKE "%{0}%" GROUP BY Exercise'.format(exercise)
-=======
 def fetch_progmax(exercise: str, username: str) -> dict:
     conn = db.connect()
     if len(exercise) > 0:
         statement = 'SELECT Exercise, MAX(Set_Size) From Users Natural Join Progress WHERE Exercise LIKE "%{0}%" AND Username = "{1}" GROUP BY Exercise'.format(exercise, username)
->>>>>>> master
     query = text(statement)
     print(query)
     query_results = conn.execute(query).fetchall()
@@ -318,9 +305,6 @@ def remove_progress_by_id(ProgressID: int) -> None:
     conn = db.connect()
     query = 'Delete From Progress where ProgressID={};'.format(ProgressID)
     conn.execute(query)
-<<<<<<< HEAD
-    conn.close()
-=======
     conn.close()
 
 # Users 
@@ -427,4 +411,3 @@ def fetch_lift_records(exercise: str) -> dict:
         }
         lift_list.append(item)
     return lift_list
->>>>>>> master
