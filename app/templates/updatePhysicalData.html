@@ -4,19 +4,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
-<center><h1>Remove A Gym</h1></center>
+<center><h1>Update Physical Data</h1></center>
 <nav>
     <ul>
         <li>
             <a href="/">Home</a>
             <a href="/gyms">Go Back To Gyms</a>
+            <a href="/PhysicalData">Physical Data</a>
         </li>
     </ul>
 </nav>
 <center>
 <form method = "POST">
-    <input type="button" name="yes" placeholder="Yes">
-    <input type="button" name="no" placeholder="No">
+    <input type="text" name="Username" placeholder="Enter Username"/>
+    <input type="text" name="LastMuscleGroup" placeholder="Last Muscle Group"/>
+    <select name="Injury" id="Injury">
+        <option value = "">Are you injured?</option>
+        <option value="TRUE">TRUE</option>
+        <option value="FALSE">FALSE</option>
+        </select>
+    <input type="text" name="LastRecorded" placeholder="Last Recorded"/>
+    <input type="text" name="WorkSplit" placeholder="Last WorkSplit"/>
     <input type="submit"/> 
 </form>
 

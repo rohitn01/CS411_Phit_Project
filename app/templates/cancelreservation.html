@@ -1,0 +1,68 @@
+<head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </head>
+<center><h1>Find Availible Reservations</h1></center>
+<nav>
+    <ul>
+        <li>
+            <a href="/home">Home</a>
+        </li>
+    </ul>
+</nav>
+<center>
+<form method = "POST">
+    <input type="text" name="Gymname" placeholder="Enter Gym Name"/>
+    <select name="month" id="month" required>
+        <option value = "">Month</option>
+        <option value="January">January</option>
+        <option value="February">February</option>
+        <option value="March">March</option>
+        <option value="April">April</option>
+        <option value="May">May</option>
+        <option value="June">June</option>
+        <option value="July">July</option>
+        <option value="August">August</option>
+        <option value="September">September</option>
+        <option value="October">October</option>
+        <option value="November">November</option>
+        <option value="December">December</option>
+        </select>
+    <select name="year" id="year" required>
+            <option value = "">Year</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            </select>
+    <input type="submit"/> 
+</form>
+<table border = '1'>
+    <tr>
+
+        <td>GymName</td>
+        <td>Start Time</td>
+        <td>End Time</td>
+        <td>Day</td>
+        <td>Month</td>
+        <td>Year</td>
+        <td>Cancel Reservation</td>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{item.GymName}}</td>
+        <td>{{item.StartTime}}</td>
+        <td>{{item.EndTime}}</td>
+        <td>{{item.Day}}</td>
+        <td>{{item.Month}}</td>
+        <td>{{item.Year}}</td>
+        <td><a href="/cancelreservation/{{item.ReservationID}}">Cancel</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+</center>

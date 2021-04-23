@@ -7,7 +7,7 @@
 <body>
     <center>
     <h1>Phit</h1>
-
+    <h2>Welcome {{g.user}}!</h2>
     <nav>
             <div>
             <div class="dropdown show">
@@ -25,6 +25,7 @@
                       </a>
                     
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="myreservations">{{g.user}}'s Reservations</a>
                         <a class="dropdown-item" href="findReservations">Make Reservation</a>
                         <a class="dropdown-item" href="findbuddies">Find Buddies</a>
                       </div>

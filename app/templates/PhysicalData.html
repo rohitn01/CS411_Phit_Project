@@ -4,20 +4,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
-<center><h1>Remove A Gym</h1></center>
+<center><h1>Physical Data</h1></center>
 <nav>
     <ul>
         <li>
             <a href="/">Home</a>
-            <a href="/gyms">Go Back To Gyms</a>
+            <a href="/PhysicalData">Physical Data</a>
         </li>
     </ul>
 </nav>
 <center>
+    <a href ="/addPhysicalData">Add Physical Data</a>
+    <a href ="/updatePhysicalData">Update Physcal Data</a>
+    <a href ="/removePhysicalData">Remove Physical Data</a>
 <form method = "POST">
-    <input type="button" name="yes" placeholder="Yes">
-    <input type="button" name="no" placeholder="No">
+    <input type="text" name="Username" placeholder="Search by Username..."/>
     <input type="submit"/> 
 </form>
+<table border = '1'>
+    <tr>
+        <td>Username</td>
+        <td>Last Muscle Group</td>
+        <td>Injury</td>
+        <td>Last Recorded</td>
+        <td>Work Split</td>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{item.Username}}</td>
+        <td>{{item.LastMuscleGroup}}</td>
+        <td>{{item.Injury}}</td>
+        <td>{{item.LastRecorded}}</td>
+        <td>{{item.WorkSplit}}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 </center>
