@@ -123,9 +123,9 @@ def insertNewPhysicalData(Username: str, LastMuscleGroup: str, Injury: str, Last
     conn.close()
 
 #Search by username
-def fetchPhysicalData(Username: str) -> dict:
+def fetchPhysicalData(Username: str, LMG: str) -> dict:
     conn = db.connect()
-    statement = 'SELECT Username, LastMuscleGroup, Injury, LastRecorded, WorkSplit FROM PhysicalData WHERE Username LIKE "%{0}%" ;'.format(Username)
+    statement = 'SELECT LastMuscleGroup, Injury, LastRecorded, WorkSplit FROM PhysicalData WHERE Username = "{0}" AND LastMuscleGroup LIKE "%{1}%" ;'.format(Username, LMG)
     query = text(statement)
     print(query)
     query_results = conn.execute(query).fetchall() #Check to make sure this returns correctly
@@ -133,11 +133,10 @@ def fetchPhysicalData(Username: str) -> dict:
     physicalData_list = []
     for result in query_results:
         item = {
-            "Username": result[0],
-            "LastMuscleGroup": result[1],
-            "Injury": result[2],
-            "LastRecorded": result[3],
-            "WorkSplit": result[4]
+            "LastMuscleGroup": result[0],
+            "Injury": result[1],
+            "LastRecorded": result[2],
+            "WorkSplit": result[3]
         }
         physicalData_list.append(item)
     conn.close()
@@ -238,12 +237,9 @@ def cancel_reservation(ID: int) -> None:
     conn.close()
 #Progress:
 
-def fetch_progress(exercise: str) -> dict:
+def fetch_progress(exercise: str, username: str) -> dict:
     conn = db.connect()
-    if len(exercise) > 0:
-        statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress WHERE Exercise LIKE "%{0}%" ORDER BY Exercise ASC;'.format(exercise)
-    else:
-        statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress ORDER BY Exercise ASC;'
+    statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress WHERE Exercise LIKE "%{0}%" AND Username = "%{1}%" ORDER BY Exercise ASC;'.format(exercise, username)
     query = text(statement)
     print(query)
     query_results = conn.execute(query).fetchall()
@@ -311,37 +307,37 @@ def remove_progress_by_id(ProgressID: int) -> None:
 
 def update_user_name(email: str, text: str) -> None:
     conn = db.connect()
-    query = 'Update Users set Username = "{1}" where Email = "{0}";'.format(text, email)
+    query = 'Update Users set Username = "{1}" where Username = "{0}";'.format(text, email)
     conn.execute(query)
     conn.close()
 
 def update_user_uni(email: str, text: str) -> None:
     conn = db.connect()
-    query = 'Update Users set University = "{1}" where Email = "{0}";'.format(text, email)
+    query = 'Update Users set University = "{1}" where Username = "{0}";'.format(text, email)
     conn.execute(query)
     conn.close()
 
 def update_user_fname(email: str, text: str) -> None:
     conn = db.connect()
-    query = 'Update Users set Firstname = "{1}" where Email = "{0}";'.format(text, email)
+    query = 'Update Users set Firstname = "{1}" where Username = "{0}";'.format(text, email)
     conn.execute(query)
     conn.close()
 
 def update_user_lname(email: str, text: str) -> None:
     conn = db.connect()
-    query = 'Update Users set Lastname = "{1}" where Email = "{0}";'.format(text, email)
+    query = 'Update Users set Lastname = "{1}" where Username = "{0}";'.format(text, email)
     conn.execute(query)
     conn.close()
 
 def update_user_password(email: str, text: str) -> None:
     conn = db.connect()
-    query = 'Update Users set Password = "{1}" where Email = "{0}";'.format(text, email)
+    query = 'Update Users set Password = "{1}" where Username = "{0}";'.format(text, email)
     conn.execute(query)
     conn.close()
 
 def update_user_covidstatus(email: str, text: str) -> None:
     conn = db.connect()
-    query = 'Update Users set CovidStatus = "{1}" where Email = "{0}";'.format(text, email)
+    query = 'Update Users set CovidStatus = "{1}" where Username = "{0}";'.format(text, email)
     conn.execute(query)
     conn.close()
 
@@ -349,11 +345,13 @@ def insert_new_user(FirstName: str, LastName: str, Email: str, University: str, 
     conn = db.connect()
     query = 'Insert Into Users (FirstName, LastName, Email, University, Username, Password, CovidStatus) VALUES ("{}", "{}", "{}", "{}", "{}", "{}", "{}");'.format(FirstName, LastName, Email, University, Username, Password, CovidStatus)
     conn.execute(query)
+    query2 = 'Insert Into PhysicalData (Username, LastMuscleGroup, Injury, LastRecorded, WorkSplit) VALUES ("{}", "N/A", "N/A", "N/A", "N/A")'.format(Username)
+    conn.execute(query2)
     conn.close()
 
 def remove_user_by_email(Email: str) -> None:
     conn = db.connect()
-    query = 'Delete From Users where Email="{}";'.format(Email)
+    query = 'Delete From Users where Username="{}";'.format(Email)
     conn.execute(query)
     conn.close()
 

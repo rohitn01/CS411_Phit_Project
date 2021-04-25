@@ -8,16 +8,19 @@
 <nav>
     <ul>
         <li>
-            <a href="/">Home</a>
+            <a href="/home">Home</a>
             <a href="/PhysicalData">Go Back To Physical Data</a>
         </li>
     </ul>
 </nav>
 <center>
 <form method = "POST">
-    <input type="text" name="Username" placeholder="Username"/>
     <input type="text" name="LastMuscleGroup" placeholder="Last Muscle Group"/>
-    <input type="text" name="Injury" placeholder="Injury"/>
+    <select name="Injury" id="Injury">
+        <option value = "">Are you injured?</option>
+        <option value="TRUE">TRUE</option>
+        <option value="FALSE">FALSE</option>
+        </select>
     <input type="text" name="LastRecorded" placeholder="Last Recorded"/>
     <input type="text" name="WorkSplit" placeholder="WorkSplit"/>
     <input type="submit"/> 

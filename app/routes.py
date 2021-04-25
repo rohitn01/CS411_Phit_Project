@@ -168,16 +168,16 @@ def PhysicalDataPage():
     # Check if it is a post req
     if request.method == 'POST':
         # collect gymname and university information from search bar(s) in gyms.html
-        Username = request.form.get("Username")
-        print(Username)
+        mg = request.form.get("LastMuscleGroup")
+        print(mg)
         # call fetch_gyms with passed parameters and get query return list.
-        items = db_helper.fetchPhysicalData(Username)
+        items = db_helper.fetchPhysicalData(g.user, mg)
         print("test")
         # return rendered template of gyms.html with list as items
         return render_template("PhysicalData.html", items=items)
     else:
         #If not POST req occurs, display all gyms to user
-        items = db_helper.fetchPhysicalData("")
+        items = db_helper.fetchPhysicalData(g.user, "")
         return render_template("PhysicalData.html", items=items)
     return render_template("PhysicalData.html")
 
@@ -219,8 +219,6 @@ def addPhysicalDataPage():
     if not g.user:
         return redirect(url_for('loginpage'))
     if request.method == 'POST':
-        Username = request.form.get("Username")
-        print(Username)
         lastMuscleGroup= request.form.get("LastMuscleGroup")
         print(lastMuscleGroup)
         injury = request.form.get("Injury")
@@ -229,7 +227,7 @@ def addPhysicalDataPage():
         print(lastRecorded)
         workSplit = request.form.get("WorkSplit")
         print(workSplit)
-        db_helper.insertNewPhysicalData(Username, lastMuscleGroup, injury, lastRecorded, workSplit)
+        db_helper.insertNewPhysicalData(g.user, lastMuscleGroup, injury, lastRecorded, workSplit)
         return render_template("addPhysicalData.html")
     return render_template("addPhysicalData.html")
 
@@ -239,20 +237,18 @@ def updatePDpage():
     if not g.user:
         return redirect(url_for('loginpage'))
     if request.method == 'POST':
-        Username = request.form.get("Username")
-        print(Username)
         lastMuscleGroup = request.form.get("LastMuscleGroup")
         injury = request.form.get("Injury")
         lastRecorded = request.form.get("LastRecorded")
         workSplit = request.form.get("WorkSplit")
         if len(lastMuscleGroup) > 0:
-            db_helper.updatePhysicalDataLastMuscleGroup(Username, lastMuscleGroup)
+            db_helper.updatePhysicalDataLastMuscleGroup(g.user, lastMuscleGroup)
         if len(injury) > 0:
-            db_helper.updatePhysicalDataInjury(Username, injury)
+            db_helper.updatePhysicalDataInjury(g.user, injury)
         if len(lastRecorded) > 0:
-            db_helper.updatePhysicalDataLastRecorded(Username, lastRecorded)
+            db_helper.updatePhysicalDataLastRecorded(g.user, lastRecorded)
         if len(workSplit) > 0:
-            db_helper.updatePhysicalDataWorkSplit(Username, workSplit)
+            db_helper.updatePhysicalDataWorkSplit(g.user, workSplit)
         return render_template("updatePhysicalData.html")
     return render_template("updatePhysicalData.html")
 
@@ -281,15 +277,13 @@ def progresspage():
         exercise = request.form.get("exercise")
         print(exercise)
         # call fetch_gyms with passed parameters and get query return list.
-        items = db_helper.fetch_progress(exercise)
+        items = db_helper.fetch_progress(exercise, g.user)
         print("test")
         # return rendered template of gyms.html with list as items
         return render_template("progress.html", items=items)
-    else:
         #If not POST req occurs, display all gyms to user
-        items = db_helper.fetch_progress("")
-        return render_template("progress.html", items=items)
-    return render_template("progress.html")
+    items = db_helper.fetch_progress("", g.user)
+    return render_template("progress.html", items=items)
 
 @app.route("/findmaxprogress", methods=['GET', 'POST'])
 def maxpage():
@@ -407,27 +401,31 @@ def updateuserpage():
     if not g.user:
         return redirect(url_for('loginpage'))
     if request.method == 'POST':
-        email = request.form.get("email")
-        print(email)
         firstname = request.form.get("firstname")
         lastname = request.form.get("lastname")
         university = request.form.get("university")
-        username = request.form.get("username")
+        newpass = request.form.get("newpassword")
+        repass = request.form.get("repassword")
         password = request.form.get("password")
-        covidstatus = request.form.get("covidstatus")
+        covidstatus = request.form.get("CovidStatus")
+
+        verify = db_helper.check_login(g.user, password)
+        print(verify)
+        if verify != 1:
+            return render_template("updateusers.html")
         if len(firstname) > 0:
-            db_helper.update_user_fname(firstname, email)
+            db_helper.update_user_fname(firstname, g.user)
         if len(lastname) > 0:
-            db_helper.update_user_lname(lastname, email)
+            db_helper.update_user_lname(lastname, g.user)
         if len(university) > 0:
-            db_helper.update_user_uni(university, email)
-        if len(username) > 0:
-            db_helper.update_user_name(username, email)
-        if len(password) > 0:
-            db_helper.update_user_password(password, email)
+            db_helper.update_user_uni(university, g.user)
+        if len(newpass) > 0 and len(repass) > 0:
+            if(newpass != repass):
+                return render_template("updateusers.html")
+            db_helper.update_user_password(newpass, g.user)
         if len(covidstatus) > 0:
-            db_helper.update_user_covidstatus(covidstatus, email)
-        return render_template("updateusers.html")
+            db_helper.update_user_covidstatus(covidstatus, g.user)
+        return redirect(url_for('homepage'))
     return render_template("updateusers.html")
 
 @app.route("/deleteuser", methods=['GET', 'POST'])
@@ -436,10 +434,12 @@ def removeuserpage():
     if not g.user:
         return redirect(url_for('loginpage'))
     if request.method == 'POST':
-        email = request.form.get("email")
-        print(email)
-        db_helper.remove_user_by_email(email)
-        return render_template("deleteuser.html")
+        password = request.form.get("password")
+        repass = request.form.get("password2")
+        if(password != repass):
+            return render_template("deleteuser.html")
+        db_helper.remove_user_by_email(g.user)
+        return redirect(url_for('loginpage'))
     return render_template("deleteuser.html")
 
 @app.route("/findliftrecord", methods=['GET', 'POST'])

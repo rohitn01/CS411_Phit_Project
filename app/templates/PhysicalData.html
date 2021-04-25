@@ -8,22 +8,19 @@
 <nav>
     <ul>
         <li>
-            <a href="/">Home</a>
+            <a href="/home">Home</a>
             <a href="/PhysicalData">Physical Data</a>
         </li>
     </ul>
 </nav>
 <center>
-    <a href ="/addPhysicalData">Add Physical Data</a>
     <a href ="/updatePhysicalData">Update Physcal Data</a>
-    <a href ="/removePhysicalData">Remove Physical Data</a>
 <form method = "POST">
-    <input type="text" name="Username" placeholder="Search by Username..."/>
+    <input type="text" name="LastMuscleGroup" placeholder="Search by Muscle Group..."/>
     <input type="submit"/> 
 </form>
 <table border = '1'>
     <tr>
-        <td>Username</td>
         <td>Last Muscle Group</td>
         <td>Injury</td>
         <td>Last Recorded</td>
@@ -31,7 +28,6 @@
     </tr>
     {% for item in items %}
     <tr>
-        <td>{{item.Username}}</td>
         <td>{{item.LastMuscleGroup}}</td>
         <td>{{item.Injury}}</td>
         <td>{{item.LastRecorded}}</td>

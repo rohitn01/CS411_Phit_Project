@@ -8,8 +8,7 @@
 <nav>
     <ul>
         <li>
-            <a href="/">Home</a>
-            <a href="/users">Go Back To Users</a>
+            <a href="/home">Home</a>
         </li>
     </ul>
 </nav>
@@ -17,11 +16,43 @@
 <form method = "POST">
     <input type="text" name="firstname" placeholder="First Name"/>
     <input type="text" name="lastname" placeholder="Last Name"/>
-    <input type="text" name="email" placeholder="Email Address"/>
-    <input type="text" name="university" placeholder="University"/>
-    <input type="text" name="username" placeholder="Username"/>
-    <input type="text" name="password" placeholder="Password"/>
-    <input type="text" name="covidstatus" placeholder="Do you have Covid?"/>
+    <select name="university" id="university">
+        <option value="">--Please choose an option--</option>
+        <option value="University of Illinois">University of Illinois</option>
+        <option value="Rutgers">Rutgers</option>
+        <option value="Northwestern">Northwestern</option>
+        <option value="Purdue">Purdue</option>
+        <option value="Ohio State">Ohio State</option>
+        <option value="Penn State">Penn State</option>
+        <option value="Michigan State">Michigan State</option>
+        <option value="John Cena University">John Cena University</option>
+        <option value="University of Indiana">University of Indiana</option>
+        <option value="University of Iowa">University of Iowa</option>
+        <option value="University of Maryland">University of Maryland</option>
+        <option value="University of Michigan">University of Michigan</option>
+        <option value="University of Minnesota">University of Minnesota</option>
+        <option value="University of Nebraska">University of Nebraska</option>
+        <option value="University of Wisconsin">University of Wisconsin</option>
+        </select>
+              <input class="input" type="password" name="newpassword" placeholder="New Password">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+
+              <input class="input" type="password" name="repassword" placeholder="Re-Type New Password">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+    <select name="CovidStatus" id="CovidStatus">
+        <option value="">--Please choose an option--</option>
+        <option value="TRUE">TRUE</option>
+        <option value="FALSE">FALSE</option>
+    </select>
+
+          <input class="input" type="password" name="password" placeholder="Current Password">
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
     <input type="submit"/> 
 </form>
 
