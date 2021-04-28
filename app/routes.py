@@ -55,6 +55,18 @@ def signuppage():
 # Flask route for gyms.html page. Executes as both GET/POST function
 # When post request is passed, function will handle input from gyms.html and pass arguments into
 # fetch_gyms() function to call select query to display search results on screen.
+
+# STORED PROCEDURE PAGE
+@app.route("/userstats", methods=['GET'])
+def statpage():
+    print(request.method)
+    print(g.user)
+    if not g.user:
+        return redirect(url_for('loginpage'))
+    items = db_helper.fetch_stats(g.user)
+    return render_template("userstats.html", items=items)
+
+
 @app.route("/gyms", methods=['GET', 'POST'])
 def gympage():
     print(request.method)

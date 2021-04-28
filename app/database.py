@@ -12,6 +12,24 @@ def check_login(username: str, password: str) -> int:
     result = query_results[0][0]
     return result
 
+
+def fetch_stats(user: str) -> dict:
+    conn = db.connect()
+    statement = 'CALL UserStats("{0}");'.format(user)
+    query = text(statement)
+    print(query)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    stat_list = []
+    for result in query_results:
+        item = {
+            "Username": result[0],
+            "Buddy": result[1],
+            "ExerciseStat": result[2],
+            "NumOfReservations": result[3]
+        }
+        stat_list.append(item)
+    return stat_list
 # calls SELECT query to display results from gyms table based on given gymname and univerity. Utilizes SQL alchemy.
 # Returns a list from each tuple returned from query
 def fetch_gyms(gymname: str, university: str) -> dict:
