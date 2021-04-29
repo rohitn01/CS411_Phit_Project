@@ -316,15 +316,13 @@ def addprogpage():
     if not g.user:
         return redirect(url_for('loginpage'))
     if request.method == 'POST':
-        progressid = request.form.get("progressid")
-        print(progressid)
         exercise = request.form.get("exercise")
         print(exercise)
         set_size = request.form.get("set_size")
         print(set_size)
         exercise_stat = request.form.get("exercise_stat")
         print(exercise_stat)
-        db_helper.insert_new_progress(progressid, exercise, set_size, exercise_stat)
+        db_helper.insert_new_progress(g.user, exercise, set_size, exercise_stat)
         return render_template("addprogress.html")
     return render_template("addprogress.html")
 

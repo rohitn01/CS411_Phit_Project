@@ -257,7 +257,7 @@ def cancel_reservation(ID: int) -> None:
 
 def fetch_progress(exercise: str, username: str) -> dict:
     conn = db.connect()
-    statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress WHERE Exercise LIKE "%{0}%" AND Username = "%{1}%" ORDER BY Exercise ASC;'.format(exercise, username)
+    statement = 'SELECT ProgressID, Exercise, Set_Size, Exercise_Stat FROM Progress WHERE Exercise LIKE "%{0}%" AND Username = "{1}" ORDER BY Exercise ASC;'.format(exercise, username)
     query = text(statement)
     print(query)
     query_results = conn.execute(query).fetchall()
@@ -276,8 +276,7 @@ def fetch_progress(exercise: str, username: str) -> dict:
 
 def fetch_progmax(exercise: str, username: str) -> dict:
     conn = db.connect()
-    if len(exercise) > 0:
-        statement = 'SELECT Exercise, MAX(Set_Size) From Users Natural Join Progress WHERE Exercise LIKE "%{0}%" AND Username = "{1}" GROUP BY Exercise'.format(exercise, username)
+    statement = 'SELECT Exercise, MAX(Set_Size) From Users Natural Join Progress WHERE Exercise LIKE "%{0}%" AND Username = "{1}" GROUP BY Exercise'.format(exercise, username)
     query = text(statement)
     print(query)
     query_results = conn.execute(query).fetchall()
@@ -308,9 +307,9 @@ def update_prog_stat(exercise_stat: int, ProgressID:int) -> None:
     conn.execute(query)
     conn.close()
 
-def insert_new_progress(ProgressID: int, Exercise: str, Set_Size: int, Exercise_Stat: int):
+def insert_new_progress(Username: str, Exercise: str, Set_Size: int, Exercise_Stat: int) -> None:
     conn = db.connect()
-    query = 'Insert Into Progress (ProgressID, Exercise, Set_Size, Exercise_Stat) VALUES ("{}", "{}", "{}", "{}");'.format(ProgressID, Exercise, Set_Size, Exercise_Stat)
+    query = 'Insert Into Progress (Username, Exercise, Set_Size, Exercise_Stat) VALUES ("{}", "{}", "{}", "{}");'.format(Username, Exercise, Set_Size, Exercise_Stat)
     conn.execute(query)
     conn.close()
 
@@ -404,15 +403,7 @@ def fetch_users(username: str, university: str) -> dict:
 def fetch_lift_records(exercise: str) -> dict:
     conn = db.connect()
     if len(exercise) > 0:
-        statement = 'CREATE VIEW userMaxes as \
-            SELECT DISTINCT pr.Username, u.University, pr.Exercise, MAX(tempUser.Exercise_Stat) as maxUser \
-            FROM Progress pr NATURAL JOIN Users u, (SELECT p.Username, p.Exercise_Stat FROM Progress p WHERE p.Exercise = "{0}") as tempUser \
-            WHERE pr.Exercise = "{0}" and pr.Username = tempUser.Username GROUP BY pr.Username, u.University;\n \
-            SELECT DISTINCT u.University, um.Exercise, MAX(um.maxUser) as maxExercise \
-            FROM userMaxes um LEFT JOIN Users u USING(Username) \
-            GROUP BY u.University, um.Exercise \
-            ORDER BY maxExercise DESC LIMIT 15\n \
-            DROP VIEW IF EXISTS userMaxes'.format(exercise) 
+        statement = 'SELECT DISTINCT u.University, pr.Exercise, MAX(pr.Exercise_Stat) as maxUser FROM Progress pr NATURAL JOIN Users u WHERE pr.Exercise = "{0}" GROUP BY u.University ORDER BY maxUser DESC;'.format(exercise) 
     query = text(statement)
     print(query)
     conn.execute(query)
