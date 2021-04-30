@@ -3,7 +3,7 @@ import sqlalchemy
 from yaml import load, Loader
 from flask import Flask
 
-app = Flask(__name__)
+
 
 def init_connect_engine():
     if os.environ.get('GAE_ENV') != 'standard':
@@ -23,6 +23,7 @@ def init_connect_engine():
         )
     return pool
 
+app = Flask(__name__)
 db = init_connect_engine()
 #conn = db.connect()
 #results = conn.execute("Select GymID, GymName, University From Gyms")

@@ -200,8 +200,15 @@ def reservationsPage():
         return redirect(url_for('loginpage'))
     username = g.user
     items = db_helper.getAvailibleReservations(username)
+@app.route("/findReservations/<GymID>", methods=['GET', 'POST'])
+def gymReservationsPage(GymID):
+    print(request.method)
+    if not g.user:
+        return redirect(url_for('loginpage'))
+    items = db_helper.getGymReservations(GymID)
 
     return render_template("findReservations.html", items=items)
+
 @app.route("/makereservation/<ReservationID>", methods=['GET', 'POST'])
 def makereservationPage(ReservationID):
     if not g.user:
@@ -323,7 +330,7 @@ def addprogpage():
         exercise_stat = request.form.get("exercise_stat")
         print(exercise_stat)
         db_helper.insert_new_progress(g.user, exercise, set_size, exercise_stat)
-        return render_template("addprogress.html")
+        return redirect(url_for('progresspage'))
     return render_template("addprogress.html")
 
 @app.route("/updateprogress", methods=['GET', 'POST'])
@@ -402,7 +409,7 @@ def adduserpage():
         covidstatus = request.form.get("covidstatus")
         print(covidstatus)
         db_helper.insert_new_user(firstname, lastname, email, university, username, password, covidstatus)
-        return render_template("addusers.html")
+        return redirect(url_for('loginpage'))
     return render_template("addusers.html")
 
 @app.route("/updateusers", methods=['GET', 'POST'])

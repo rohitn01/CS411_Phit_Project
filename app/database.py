@@ -221,7 +221,29 @@ def getAvailibleReservations(Username: str) -> dict:
         reservations.append(item)
     
     return reservations
+def getGymReservations(GymID: str) -> dict:
+    conn = db.connect()
+    statement = 'SELECT ReservationID, GymName, StartTime, EndTime, Day, Month, Year \
+            FROM Reservations r JOIN Gyms g USING (GymID) WHERE GymID = {0} \
+            AND r.Username IS NULL ORDER BY Day DESC, StartTime DESC;'.format(GymID)
+    query = text(statement)
+    print(query)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    reservations = []
+    for result in query_results:
+        item = {
+            "ReservationID": result[0],
+            "GymName": result[1],
+            "StartTime": result[2],
+            "EndTime": result[3],
+            "Day": result[4],
+            "Month": result[5],
+            "Year": result[6],
+        }
 
+        reservations.append(item)
+    return reservations
 def update_reservation(username: str, ID: int) -> None:
     conn = db.connect()
     query = 'Update Reservations set Username = "{0}" where ReservationID = {1};'.format(username, ID)

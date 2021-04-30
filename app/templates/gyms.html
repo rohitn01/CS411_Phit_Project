@@ -17,7 +17,7 @@
     <a href ="/addgym">Add A Gym</a>
 <form method = "POST">
     <input type="text" name="gymname" placeholder="Search by Gym Name..."/>
-    <select name="university" id="university" required>
+    <select name="university" id="university">
         <option value="">--Please choose an option--</option>
         <option value="University of Illinois">University of Illinois</option>
         <option value="Rutgers">Rutgers</option>
@@ -45,7 +45,6 @@
         <td>Capacity</td>
         <td>Status</td>
         <td>Update Gym</td>
-        <td>Remove Gym</td>
     </tr>
     {% for item in items %}
     <tr>
@@ -58,7 +57,7 @@
             <a href ="/updategym/{{item.GymID}}">Edit</a>
         </td>
         <td>
-            <a href ="/removegym/{{item.GymID}}">Remove</a>
+            <a href ="/findReservations/{{item.GymID}}">Reservations</a>
         </td>
     </tr>
     {% endfor %}
