@@ -221,6 +221,7 @@ def getAvailibleReservations(Username: str) -> dict:
         reservations.append(item)
     
     return reservations
+
 def getGymReservations(GymID: str) -> dict:
     conn = db.connect()
     statement = 'SELECT ReservationID, GymName, StartTime, EndTime, Day, Month, Year \

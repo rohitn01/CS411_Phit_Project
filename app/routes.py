@@ -200,13 +200,14 @@ def reservationsPage():
         return redirect(url_for('loginpage'))
     username = g.user
     items = db_helper.getAvailibleReservations(username)
+    return render_template("findReservations.html", items=items)
+
 @app.route("/findReservations/<GymID>", methods=['GET', 'POST'])
 def gymReservationsPage(GymID):
     print(request.method)
     if not g.user:
         return redirect(url_for('loginpage'))
     items = db_helper.getGymReservations(GymID)
-
     return render_template("findReservations.html", items=items)
 
 @app.route("/makereservation/<ReservationID>", methods=['GET', 'POST'])
